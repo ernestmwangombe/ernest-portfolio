@@ -232,13 +232,13 @@ document.addEventListener('DOMContentLoaded', () => {
     return `${Math.floor(months / 12)}y ago`;
   };
 
-  fetch(`https://api.github.com/users/${GH_USER}/repos?sort=updated&per_page=6`)
+  fetch(`https://api.github.com/users/${GH_USER}/repos?sort=updated&per_page=8`)
     .then(res => {
       if (!res.ok) throw new Error('GitHub API error: ' + res.status);
       return res.json();
     })
     .then(repos => {
-      const visible = repos.filter(r => !r.fork).slice(0, 6);
+      const visible = repos.filter(r => !r.fork).slice(0, 8);
       if (!visible.length) {
         ghGrid.innerHTML = `<div class="gh-state">No public repositories found yet — check back soon, or view the profile directly.</div>`;
         return;

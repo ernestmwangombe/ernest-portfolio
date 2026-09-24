@@ -523,6 +523,17 @@ header.nav {
 }
 .project-status.building { background: rgba(212,145,75,0.15); color: var(--copper); }
 .project-status.learning { background: rgba(91,155,213,0.15); color: var(--steel); }
+.project-status.live { background: rgba(111,191,139,0.15); color: var(--ok); }
+.project-status.built { background: rgba(140,160,179,0.15); color: var(--text-dim); }
+.project-link { margin-top: 14px; }
+.project-link a {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--steel);
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s;
+}
+.project-link a:hover { border-color: var(--steel); }
 
 /* ---------- EXPERIENCE TIMELINE ---------- */
 .exp-item {

@@ -170,55 +170,70 @@
       <div class="section-head reveal">
         <div class="eyebrow">SHEET 04 — CURRENT WORK</div>
         <h2>What I'm Building</h2>
-        <p>Real, current work under the FlyRank Backend AI Engineer internship — labeled honestly by stage.</p>
+        <p>Real, shipped repositories — not hypotheticals. Badges show status honestly: <strong style="color:var(--copper)">IN PROGRESS</strong> for active work, <strong style="color:var(--text-dim)">BUILT</strong> for completed repos without a public deployment, and <strong style="color:var(--ok)">LIVE</strong> for anything with a real URL. The <a href="#github" style="color:var(--steel)">GitHub Activity</a> feed below stays current automatically as new repos are pushed.</p>
       </div>
 
       <div class="project-card reveal">
         <span class="project-status building">IN PROGRESS</span>
-        <div class="project-flow">RECEIVE <span class="sep">→</span> EXTRACT <span class="sep">→</span> VALIDATE <span class="sep">→</span> TRANSFORM <span class="sep">→</span> STORE <span class="sep">→</span> RETRIEVE <span class="sep">→</span> AUDIT</div>
-        <h4>Secure Document Automation</h4>
-        <p>Turning unstructured business documents (PDFs, forms, invoices) into structured, validated records — reducing manual entry and inconsistent record-keeping without skipping validation.</p>
-        <div class="project-stack"><span>Node.js</span><span>Express.js</span><span>Zod</span><span>SQLite</span></div>
+        <div class="project-flow">EMBED SCRIPT <span class="sep">→</span> TENANT CONFIG API <span class="sep">→</span> JWT ISOLATION <span class="sep">→</span> POSTGRESQL <span class="sep">→</span> CDN-STYLE CACHE</div>
+        <h4>Multi-Tenant Widget &amp; Analytics Platform</h4>
+        <p>FlyRank capstone project — a backend platform serving embeddable, cacheable widgets to third-party sites, with strict per-tenant data isolation (JWT + <code>tenant_id</code>-scoped queries), cascading foreign keys, and standardized error handling across every route.</p>
+        <div class="project-stack"><span>Node.js</span><span>Express.js</span><span>PostgreSQL</span><span>JWT</span><span>CORS</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/flyrank-capstone-widget-platform" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
 
       <div class="project-card reveal">
-        <span class="project-status building">IN PROGRESS</span>
-        <div class="project-flow">REQUEST <span class="sep">→</span> JWT AUTH <span class="sep">→</span> VALIDATION MIDDLEWARE <span class="sep">→</span> BUSINESS LOGIC <span class="sep">→</span> SQLITE</div>
-        <h4>Backend AI APIs</h4>
-        <p>RESTful microservices built with Node.js and Express, with Supabase Auth and custom JWT verification middleware guarding protected endpoints, and OpenAPI 3.0 (Swagger) documentation for every route.</p>
-        <div class="project-stack"><span>Node.js</span><span>Express.js</span><span>Supabase Auth</span><span>JWT</span><span>OpenAPI 3.0</span></div>
+        <span class="project-status built">BUILT</span>
+        <div class="project-flow">REQUEST <span class="sep">→</span> EXPRESS ROUTER <span class="sep">→</span> PARAMETERISED QUERY <span class="sep">→</span> POSTGRESQL / SQLITE</div>
+        <h4>Task Management &amp; Workflow Automation API</h4>
+        <p>A containerized RESTful CRUD API with OpenAPI 3.0 (Swagger UI) docs, parameterised queries against injection, and a one-command Docker Compose stack (Express + PostgreSQL 16) for reproducible local setup.</p>
+        <div class="project-stack"><span>Node.js</span><span>Express.js</span><span>PostgreSQL</span><span>SQLite</span><span>Docker</span><span>OpenAPI 3.0</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/task-management-api" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
 
       <div class="project-card reveal">
-        <span class="project-status building">IN PROGRESS</span>
-        <div class="project-flow">WEB SOURCE <span class="sep">→</span> CHEERIO SCRAPE <span class="sep">→</span> ZOD VALIDATION <span class="sep">→</span> TYPE-SAFE JSON</div>
-        <h4>Structured Web Extraction</h4>
-        <p>Automated scraping pipelines using Cheerio, with Zod runtime schema validation converting unstructured web data into type-safe, database-ready JSON.</p>
-        <div class="project-stack"><span>Cheerio</span><span>Zod</span><span>Node.js</span></div>
+        <span class="project-status built">BUILT</span>
+        <div class="project-flow">REQUEST <span class="sep">→</span> SUPABASE JWT CHECK <span class="sep">→</span> requireAuth MIDDLEWARE <span class="sep">→</span> PROTECTED ROUTE</div>
+        <h4>Secure SME Backend &amp; Supabase Auth API</h4>
+        <p>A zero-trust Express backend for Kenyan SMEs — every restricted route passes through a single reusable middleware gate that verifies cryptographically signed Supabase JWTs before granting access, rejecting forged or unverified tokens outright.</p>
+        <div class="project-stack"><span>Node.js</span><span>Express.js</span><span>Supabase Auth</span><span>JWT</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/Auth-Login-protect" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
 
       <div class="project-card reveal">
-        <span class="project-status building">IN PROGRESS</span>
-        <div class="project-flow">PROMPT LADDER <span class="sep">→</span> MULTI-MODEL RUN <span class="sep">→</span> SCORE <span class="sep">→</span> COMPARE</div>
-        <h4>Multi-Model Evaluation Frameworks</h4>
-        <p>5-stage prompt ladders benchmarking response quality, token usage, and logical adherence across different LLM architectures.</p>
-        <div class="project-stack"><span>LLM Evaluation</span><span>Prompt Ladders</span><span>Benchmarking</span></div>
+        <span class="project-status built">BUILT</span>
+        <div class="project-flow">TARGET SCOPE <span class="sep">→</span> POLITE FETCH <span class="sep">→</span> SCHEMA VALIDATION <span class="sep">→</span> RUN REPORT</div>
+        <h4>Ethical Web Scraper Pipeline</h4>
+        <p>A deliberately polite, rate-limited scraping pipeline — checks <code>robots.txt</code> before running, validates every record against a schema, caches responses, and produces an auditable run report rather than silently failing or over-fetching.</p>
+        <div class="project-stack"><span>Node.js</span><span>Schema Validation</span><span>Rate Limiting</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/ethical-web-scraper-pipeline" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
 
       <div class="project-card reveal">
-        <span class="project-status learning">LEARNING / BUILDING</span>
-        <div class="project-flow">DOCUMENTS <span class="sep">→</span> INDEXING <span class="sep">→</span> RETRIEVAL <span class="sep">→</span> GROUNDED GENERATION <span class="sep">→</span> CITED RESPONSE</div>
-        <h4>RAG Systems</h4>
-        <p>Retrieval-augmented generation over approved document sets — a controlled search/index layer rather than an unrestricted chatbot, with source awareness built in.</p>
-        <div class="project-stack"><span>RAG</span><span>Grounding</span><span>Evaluation</span></div>
+        <span class="project-status learning">IN PROGRESS · PRE-LAUNCH</span>
+        <div class="project-flow">CV / JD UPLOAD <span class="sep">→</span> AI PARSING PIPELINE <span class="sep">→</span> DETERMINISTIC SCORING <span class="sep">→</span> 16 RENDERED LAYOUTS</div>
+        <h4>Applyfolio</h4>
+        <p>A React SPA that runs a CV and job description through a modular AI analysis pipeline (parsing → matching → suggestions), scores compatibility client-side for reproducible results, and renders 16 hand-built, ATS-checked CV layouts as real DOM — not images.</p>
+        <div class="project-stack"><span>React</span><span>Vite</span><span>AI Pipeline</span><span>PDF/DOCX Parsing</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/applyfolio" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
 
       <div class="project-card reveal">
-        <span class="project-status learning">LEARNING / BUILDING</span>
-        <div class="project-flow">RELIABILITY <span class="sep">→</span> RETRIES <span class="sep">→</span> RATE LIMITS <span class="sep">→</span> LOGGING <span class="sep">→</span> MONITORING</div>
-        <h4>Reliability Engineering</h4>
-        <p>The unglamorous half of AI systems: error handling, retry logic, rate limiting, structured logging, and audit trails — applying systems-admin discipline to application code.</p>
-        <div class="project-stack"><span>Node.js</span><span>Logging</span><span>Monitoring</span></div>
+        <span class="project-status live">LIVE · CLIENT PROJECT</span>
+        <div class="project-flow">BRAND SYSTEM <span class="sep">→</span> STATIC BUILD <span class="sep">→</span> LIGHT/DARK THEMING <span class="sep">→</span> DEPLOY</div>
+        <h4>Nurse Lilian M KE — Website</h4>
+        <p>A freelance-built static site for a nursing career and mentorship platform — a full redesign with a consistent visual identity, light/dark theming, and WhatsApp as the primary contact channel. Code is private at the client's request; the live site is public.</p>
+        <div class="project-stack"><span>HTML5</span><span>CSS3</span><span>Vanilla JS</span></div>
+        <div class="project-link"><a href="https://nurselilianmke.netlify.app/" target="_blank" rel="noopener">View Live Site ↗</a></div>
+      </div>
+
+      <div class="project-card reveal">
+        <span class="project-status live">LIVE</span>
+        <div class="project-flow">DESIGN <span class="sep">→</span> STATIC BUILD <span class="sep">→</span> GITHUB API FETCH <span class="sep">→</span> DEPLOY</div>
+        <h4>This Portfolio Site</h4>
+        <p>The site you're on right now — a hand-built, dependency-free static site with an interactive system-architecture diagram and a live GitHub repository feed pulled client-side from the GitHub REST API.</p>
+        <div class="project-stack"><span>HTML5</span><span>CSS3</span><span>Vanilla JS</span><span>GitHub REST API</span><span>Netlify</span></div>
+        <div class="project-link"><a href="https://github.com/ernestmwangombe/ernest-portfolio" target="_blank" rel="noopener">View Repo ↗</a></div>
       </div>
     </div>
   </section>
@@ -325,7 +340,7 @@
         </div>
         <div class="skill-group current-focus">
           <h4>Backend AI Engineering — FlyRank Internship</h4>
-          <div class="skill-pills"><span>Node.js</span><span>Express.js</span><span>Zod</span><span>SQLite</span><span>Supabase Auth</span><span>JWT</span><span>OpenAPI 3.0 (Swagger)</span><span>Cheerio</span><span>REST APIs</span><span>Multi-Model Benchmarking</span><span>Prompt Ladders</span><span>SxS Evaluation</span></div>
+          <div class="skill-pills"><span>Node.js</span><span>Express.js</span><span>Zod</span><span>SQLite</span><span>PostgreSQL</span><span>Docker</span><span>Supabase Auth</span><span>JWT</span><span>OpenAPI 3.0 (Swagger)</span><span>Cheerio</span><span>REST APIs</span><span>React</span><span>Vite</span><span>Multi-Model Benchmarking</span><span>Prompt Ladders</span><span>SxS Evaluation</span></div>
         </div>
       </div>
     </div>
@@ -356,13 +371,17 @@
         <h2>Education &amp; Certifications</h2>
       </div>
       <div class="card-grid reveal">
-        <div class="stack-card"><div class="icon-label">DEGREE · 2010–2012</div><h4>A.A.S. Computer Systems, Networking &amp; Telecommunications</h4><p>Lone Star College, Houston, TX — <a href="https://europa.eu/europass/eportfolio/screen/share/5d13682d-b213-4aae-8bca-b984971c6b99?lang=en" target="_blank" rel="noopener" style="color:var(--steel)">Europass Verified Record ↗</a></p></div>
+        <div class="stack-card"><div class="icon-label">DEGREE · 2010–2012</div><h4>A.A.S. Computer Systems, Networking &amp; Telecommunications</h4><p>Lone Star College, Houston, TX — <a href="https://europa.eu/europass/eportfolio/screen/share/5d13682d-b213-4aae-8bca-b984971c6b99?lang=en" target="_blank" rel="noopener" style="color:var(--steel)">Europass Verified Record ↗</a> · <a href="https://europa.eu/europass/eportfolio/screen/share/c233736c-6c6e-4ca6-8c57-b4536d90cf26?lang=en" target="_blank" rel="noopener" style="color:var(--steel)">Digital Test Results ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>AI Fluency: Framework &amp; Foundations</h4><p>Anthropic Education — <a href="https://verify.skilljar.com/c/8dc5w3x97ob3" target="_blank" rel="noopener" style="color:var(--steel)">Verification Link ↗</a></p></div>
+        <div class="stack-card"><div class="icon-label">CERT</div><h4>Claude Platform 101</h4><p>Anthropic Education — <a href="https://verify.skilljar.com/c/cdtxincc3mdu" target="_blank" rel="noopener" style="color:var(--steel)">Verification Link ↗</a></p></div>
+        <div class="stack-card"><div class="icon-label">CERT</div><h4>Claude Code 101</h4><p>Anthropic Education — <a href="https://verify.skilljar.com/c/o86gsymha5ox" target="_blank" rel="noopener" style="color:var(--steel)">Verification Link ↗</a></p></div>
+        <div class="stack-card"><div class="icon-label">CERT</div><h4>Claude Code in Action</h4><p>Anthropic Education — <a href="https://verify.skilljar.com/c/p7q4q86qcn3i" target="_blank" rel="noopener" style="color:var(--steel)">Verification Link ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Microsoft Entra ID (Azure AD)</h4><p><a href="https://www.linkedin.com/learning/certificates/45569244e6a8a18b2347bda462957ac236b6542ef331882ff69e2a6966b38638" target="_blank" rel="noopener" style="color:var(--steel)">LinkedIn Certificate ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Cisco Cybersecurity Pathway</h4><p><a href="https://www.credly.com/badges/8880536e-3015-4e42-8446-51b20e28bd75" target="_blank" rel="noopener" style="color:var(--steel)">Credly Badge ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Getting Started with Google Gemini</h4><p><a href="https://www.linkedin.com/learning/certificates/ccce04c2f359a5b7eb16fc6c4fadf40e383711e54f5d4d090f2197ec57ae03a5" target="_blank" rel="noopener" style="color:var(--steel)">LinkedIn Certificate ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Web Design with AI</h4><p><a href="https://credsverse.com/credentials/ad625a6e-0106-4f0b-9aac-8c2e69b0b65f" target="_blank" rel="noopener" style="color:var(--steel)">Verification Link ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Zendesk Administration &amp; Support</h4><p><a href="https://www.linkedin.com/learning/certificates/bf967e477d2aa0dc33ba346751e33f35a507f331abc2ac86d2d6c7410db55102" target="_blank" rel="noopener" style="color:var(--steel)">LinkedIn Certificate ↗</a></p></div>
+        <div class="stack-card"><div class="icon-label">CERT</div><h4>Customer Service: Problem-Solving &amp; Troubleshooting</h4><p><a href="https://www.linkedin.com/learning/certificates/d8795ed8054583be4a1f15b3582d4f96d96fc4302a367b87641e6a9e784e333f" target="_blank" rel="noopener" style="color:var(--steel)">LinkedIn Certificate ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">CERT</div><h4>Introduction to Modern AI &amp; Chatbots</h4><p><a href="https://www.credly.com/badges/10529e8b-4708-4366-b08c-70f540e511f3/public_url" target="_blank" rel="noopener" style="color:var(--steel)">Credly Badge ↗</a></p></div>
         <div class="stack-card"><div class="icon-label">LANGUAGE</div><h4>EF SET English (C2 Proficient)</h4><p><a href="https://cert.efset.org/isWKnr" target="_blank" rel="noopener" style="color:var(--steel)">EF SET Verification ↗</a> · Swahili — Native</p></div>
       </div>

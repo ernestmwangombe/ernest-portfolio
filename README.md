@@ -15,13 +15,26 @@ Static site — no build step, no framework, no dependencies.
 - **HTML5** — semantic markup, single page
 - **CSS3** — custom properties (design tokens), CSS Grid/Flexbox, no framework
 - **Vanilla JavaScript** — DOM-driven interactivity, no libraries
-- **GitHub REST API** — live repo cards fetched client-side (`api.github.com/users/ernestmwangombe/repos`)
+- **GitHub REST API** — live repo cards fetched client-side (`api.github.com/users/ernestmwangombe/repos?per_page=8`)
+
+## Referenced projects
+
+The "What I'm Building" section links out to these repos rather than embedding their code:
+
+- [task-management-api](https://github.com/ernestmwangombe/task-management-api) — containerized REST CRUD API (Node.js, Express, PostgreSQL/SQLite, Docker, OpenAPI 3.0)
+- [Auth-Login-protect](https://github.com/ernestmwangombe/Auth-Login-protect) — Supabase Auth + JWT backend for Kenyan SMEs
+- [ethical-web-scraper-pipeline](https://github.com/ernestmwangombe/ethical-web-scraper-pipeline) — rate-limited, schema-validated scraping pipeline
+- [flyrank-capstone-widget-platform](https://github.com/ernestmwangombe/flyrank-capstone-widget-platform) — multi-tenant embeddable widget platform (FlyRank capstone, in progress)
+- [applyfolio](https://github.com/ernestmwangombe/applyfolio) — AI-assisted job application workspace (React SPA, pre-launch)
+- Nurse Lilian M KE — freelance client site, live at [nurselilianmke.netlify.app](https://nurselilianmke.netlify.app/) (source private at client's request)
 
 ## Features
 
 - Interactive 8-layer system architecture diagram (click to expand)
-- Expandable professional experience timeline, sourced from my CV
-- Live GitHub repository feed with loading / empty / error states
+- Expandable professional experience timeline, sourced from my CV — including the FlyRank Backend AI Engineer internship, explicitly labeled as an internship
+- "What I'm Building" section linking out to real, named repositories (task-management-api, Auth-Login-protect, ethical-web-scraper-pipeline, flyrank-capstone-widget-platform, applyfolio) plus one freelance client project
+- Live GitHub repository feed (up to 8 repos) with loading / empty / error states — pulls automatically from the GitHub REST API, so new public repos appear without editing the site
+- Curated certifications section — only certificates that back up skills or sections already shown elsewhere on the site, including Anthropic Education's AI Fluency, Claude Platform 101, Claude Code 101, and Claude Code in Action
 - Client-side contact form (mailto-based — no backend configured)
 - Fully responsive, keyboard-accessible, `prefers-reduced-motion` support
 - Clear separation throughout between **established professional experience** and **current engineering development** (FlyRank internship)
