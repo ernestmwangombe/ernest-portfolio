@@ -15,7 +15,7 @@ Static site — no build step, no framework, no dependencies.
 - **HTML5** — semantic markup, single page
 - **CSS3** — custom properties (design tokens), CSS Grid/Flexbox, no framework
 - **Vanilla JavaScript** — DOM-driven interactivity, no libraries
-- **GitHub REST API** — live repo cards fetched client-side (`api.github.com/users/ernestmwangombe/repos?per_page=8`)
+- **GitHub REST API** — live repo cards fetched client-side (`api.github.com/users/ernestmwangombe/repos?sort=updated&per_page=8`)
 
 ## Referenced projects
 
@@ -71,6 +71,32 @@ Then open `http://localhost:8000`. (A local server, rather than opening `index.h
 ## Deployment
 
 Deployed via Netlify, connected to this repository — pushes to `main` deploy automatically.
+
+## Stack and why
+
+Plain HTML, CSS and JavaScript on Netlify's free tier, with no framework and no build step.
+
+This site started about eight months ago as a simple profile page I built with AI,
+using loose, unstructured prompts. When I joined the FlyRank internship I learned to
+structure a prompt properly, so instead of switching to a framework I rebuilt on the
+same codebase that started it all. Keeping it dependency-free also fits the
+program's free-tools-only rule: nothing to install, and a deploy is just a push to GitHub.
+
+**Trade-offs I accept:**
+
+- All page content lives in one `index.html`, so adding a project means editing HTML
+  by hand (the steps are in `ADDING_A_CASE.md`).
+- The GitHub feed calls the public API without a token, which limits how many
+  requests one visitor can make per hour. The feed has a loading, empty and error
+  state for that reason.
+
+## What I'd build next
+
+1. **A full case study for the Embeddable Widget & Lead-Capture Platform** (my accepted
+   FlyRank capstone): problem, what I did, what came of it, with one honest win and
+   one honest limitation. A calendar reminder holds the slot.
+2. **An AI document ingestion pipeline** that extracts structured data from PDFs and
+   receipts, validates it with Zod, and writes it to a database.
 
 ## What broke
 
