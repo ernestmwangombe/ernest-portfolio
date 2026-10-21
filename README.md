@@ -2,7 +2,7 @@
 
 Source code for my personal portfolio site — live at **[ernestmwangombe.netlify.app](https://ernestmwangombe.netlify.app/)**.
 
-IT Systems Administrator (10+ years, enterprise infrastructure, identity systems, AI evaluation) transitioning into Backend AI Engineering. This site documents that trajectory: established professional experience, current backend engineering internship at FlyRank, and the systems-engineering philosophy behind it.
+IT Systems Administrator (10+ years, enterprise infrastructure, identity systems, AI evaluation) transitioning into Backend AI Engineering. This site documents that trajectory: established professional experience, the completed FlyRank Backend AI Engineering internship (Jul–Oct 2026), and the systems-engineering philosophy behind it.
 
 ## Live site
 
@@ -24,17 +24,20 @@ The "What I'm Building" section links out to these repos rather than embedding t
 - [task-management-api](https://github.com/ernestmwangombe/task-management-api) — containerized REST CRUD API (Node.js, Express, PostgreSQL/SQLite, Docker, OpenAPI 3.0)
 - [Auth-Login-protect](https://github.com/ernestmwangombe/Auth-Login-protect) — Supabase Auth + JWT backend for Kenyan SMEs
 - [ethical-web-scraper-pipeline](https://github.com/ernestmwangombe/ethical-web-scraper-pipeline) — rate-limited, schema-validated scraping pipeline
-- [flyrank-capstone-widget-platform](https://github.com/ernestmwangombe/flyrank-capstone-widget-platform) — multi-tenant embeddable widget platform (FlyRank capstone, in progress)
+- [flyrank-capstone-widget-platform](https://github.com/ernestmwangombe/flyrank-capstone-widget-platform) — multi-tenant embeddable widget platform (FlyRank capstone, accepted)
 - [applyfolio](https://github.com/ernestmwangombe/applyfolio) — AI-assisted job application workspace (React SPA, pre-launch)
 - Nurse Lilian M KE — freelance client site, live at [nurselilianmke.netlify.app](https://nurselilianmke.netlify.app/) (source private at client's request)
 
 ## Features
 
 - Interactive 8-layer system architecture diagram (click to expand)
-- Expandable professional experience timeline, sourced from my CV — including the FlyRank Backend AI Engineer internship, explicitly labeled as an internship
+- Expandable professional experience timeline, sourced from my CV — including the completed FlyRank Backend AI Engineering internship (Jul–Oct 2026), explicitly labeled as an internship
 - "What I'm Building" section linking out to real, named repositories (task-management-api, Auth-Login-protect, ethical-web-scraper-pipeline, flyrank-capstone-widget-platform, applyfolio) plus one freelance client project
 - Live GitHub repository feed (up to 8 repos) with loading / empty / error states — pulls automatically from the GitHub REST API, so new public repos appear without editing the site
 - Curated certifications section — only certificates that back up skills or sections already shown elsewhere on the site, including Anthropic Education's AI Fluency, Claude Platform 101, Claude Code 101, and Claude Code in Action
+- "Next case" section (Sheet 04.1) naming the upcoming case study, with the three-beat shape and the steps for adding one (full note in `ADDING_A_CASE.md`)
+- FlyRank credentials (certificate, recommendation letter, evaluation report) with local PDF copies, FlyRank verification links, and a verify badge in the footer
+- Open Graph / Twitter share-preview metadata with a custom 1200x630 image
 - Client-side contact form (mailto-based — no backend configured)
 - Fully responsive, keyboard-accessible, `prefers-reduced-motion` support
 - Clear separation throughout between **established professional experience** and **current engineering development** (FlyRank internship)
@@ -47,7 +50,10 @@ The "What I'm Building" section links out to these repos rather than embedding t
 ├── style.css       # design tokens + all styling
 ├── script.js       # interactivity: diagram, timeline, GitHub fetch, form, nav
 ├── Ernest_Mwangombe_CV.pdf   # downloadable resume
-└── Ernest Mlati 2.JPG        # hero headshot
+├── ernest-portrait.jpg       # hero headshot
+├── og-image.png              # 1200x630 share-preview image
+├── *-flyrank-*.pdf           # FlyRank certificate, recommendation letter, evaluation report
+└── ADDING_A_CASE.md          # how I add the next case study
 ```
 
 ## Run locally
@@ -65,6 +71,21 @@ Then open `http://localhost:8000`. (A local server, rather than opening `index.h
 ## Deployment
 
 Deployed via Netlify, connected to this repository — pushes to `main` deploy automatically.
+
+## What broke
+
+The hero portrait rendered as a blank space after deploy. The code referenced
+the image filename in lowercase, but my file was saved with an uppercase
+extension. Windows ignores that difference, but Netlify's servers treat
+filenames as case-sensitive, so the image never loaded. Nothing crashed and
+there was no error message, just an empty hero.
+
+**Fix:** I renamed the file to `ernest-portrait.jpg` (lowercase, no spaces) and
+updated the reference in `index.html`.
+
+**Lesson:** When something shows up blank, check the boring things first:
+filenames, paths, and capitalisation. A setup that works on my laptop can still
+fail on the server.
 
 ## Contact
 
