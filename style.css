@@ -742,3 +742,45 @@ a:focus-visible, button:focus-visible, .layer:focus-visible, .exp-header:focus-v
   .title-block-top { padding: 28px 24px 24px; flex-direction: column; }
   .hero-plate { width: 100%; }
 }
+
+/* ---------- NEXT CASE (Sheet 04.1) ---------- */
+.project-status.queued { background: transparent; border: 1px solid var(--steel-dim); color: var(--steel); }
+.case-layout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1px;
+  align-items: start;
+}
+.case-layout .project-card { margin-bottom: 0; height: 100%; }
+.case-beats, .how-steps { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 16px 0 4px; }
+.case-beats li, .how-steps li { display: flex; gap: 14px; font-size: 14px; color: var(--text-dim); }
+.case-beats strong { color: var(--text); font-weight: 600; }
+.beat-n { font-family: var(--mono); font-size: 12px; color: var(--copper); flex-shrink: 0; width: 22px; padding-top: 2px; }
+.how-card { border: 1px solid var(--border); background: var(--panel-raised); padding: 28px; height: 100%; }
+.how-card .icon-label { font-family: var(--mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; margin-bottom: 4px; }
+.how-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-faint); }
+.case-layout code, .how-note code { font-family: var(--mono); font-size: 12px; color: var(--steel); }
+@media (max-width: 860px) { .case-layout { grid-template-columns: 1fr; } }
+
+/* ---------- FLYRANK FOOTER BADGE ---------- */
+.fr-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--text-dim);
+  border: 1px solid var(--steel-dim);
+  border-radius: 20px;
+  padding: 6px 14px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.fr-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
+.fr-badge:hover { color: var(--steel); border-color: var(--steel); }
+
+.cred-docs { margin-top: 10px; font-size: 12.5px; line-height: 1.9; }
+.cred-docs a { color: var(--steel); }
+
+.project-accepted { font-family: var(--mono); font-size: 12px; color: var(--ok); margin: -2px 0 12px; }
+.project-accepted a { color: var(--steel); border-bottom: 1px solid transparent; }
+.project-accepted a:hover { border-color: var(--steel); }

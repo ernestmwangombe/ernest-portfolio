@@ -121,8 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
      ============================================================ */
   const experience = [
     {
-      role: 'Backend AI Engineer', org: 'FlyRank (Remote) · Internship', dates: 'Jun 2026 – Present', open: true, badge: 'CURRENT · INTERNSHIP',
+      role: 'Backend AI Engineering Intern', org: 'FlyRank (Remote) · Internship', dates: 'Jul 2026 – Oct 2026', open: true, badge: 'COMPLETED · INTERNSHIP',
       bullets: [
+        'Completed 15 practical assignments across API contracts, task design and prompting, retrieval and grounding, and evaluation and operations; the capstone, "Embeddable Widget & Lead-Capture Platform", was reviewed and accepted by the lead track mentor.',
         'Architected RESTful microservices using Node.js and Express to handle core API workflows, incorporating input validation middleware and OpenAPI 3.0 (Swagger) documentation.',
         'Engineered disk-backed relational database schemas in SQLite using parameterised SQL queries to eliminate injection vulnerabilities and maintain data persistence.',
         'Built authentication and authorisation pipelines leveraging Supabase Auth and custom JWT verification middleware to safeguard protected backend endpoints.',
