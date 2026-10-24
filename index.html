@@ -1,42 +1,73 @@
+<!-- Tells the browser this is a modern HTML5 page. -->
 <!DOCTYPE html>
+<!-- The root element. lang="en" says the page is in English (helps screen readers and translation tools). -->
 <html lang="en">
+<!-- Everything inside head is information about the page (title, link previews, styles). None of it is shown on the page itself. -->
 <head>
+<!-- Character set: lets the page show symbols such as arrows, ticks and curly apostrophes correctly. -->
 <meta charset="UTF-8">
+<!-- Makes the page scale to the device width on phones, instead of showing a zoomed-out desktop page. -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- The title shown in the browser tab and in search results. -->
 <title>Ernest Mwang’ombe — IT Systems Admin → Backend AI Engineer</title>
+<!-- The summary text that search engines may show under the title. -->
 <meta name="description" content="IT Systems Administrator with 10+ years in enterprise infrastructure and identity, now a Backend AI Engineer. Completed the FlyRank internship (Jul–Oct 2026).">
+<!-- Open Graph tags (og:) control the preview card shown when the link is shared on LinkedIn, WhatsApp, Slack and similar. This one is the site name. -->
 <meta property="og:site_name" content="Ernest Mwangombe">
+<!-- Short description shown in the preview card. -->
 <meta property="og:description" content="10+ years in enterprise IT, now building backend AI systems. Completed the FlyRank Backend AI Engineering internship.">
+<!-- Tells platforms this is a normal website page. -->
 <meta property="og:type" content="website">
+<!-- The official address of the page. -->
 <meta property="og:url" content="https://ernestmwangombe.netlify.app/">
+<!-- The preview image shown in the card. It must be a full web address, and the file og-image.png must be in the site folder. -->
 <meta property="og:image" content="https://ernestmwangombe.netlify.app/og-image.png">
+<!-- Preview image width and height in pixels, so platforms can lay out the card before the image loads. -->
 <meta property="og:image:width" content="1200">
+<!-- Preview image height in pixels (see the line above). -->
 <meta property="og:image:height" content="630">
+<!-- Describes the preview image for people using screen readers. -->
 <meta property="og:image:alt" content="Ernest Mlati Mwang'ombe — IT Systems Administrator to Backend AI Engineer, in a blueprint-style title block">
+<!-- Twitter / X card settings. summary_large_image asks for a large image preview. -->
 <meta name="twitter:card" content="summary_large_image">
+<!-- Title shown in the Twitter / X card. -->
 <meta name="twitter:title" content="Ernest Mlati Mwang'ombe — Systems to Intelligent Systems">
+<!-- Description shown in the Twitter / X card. -->
 <meta name="twitter:description" content="From managing systems to engineering intelligent systems. IT infrastructure, security, and AI evaluation experience applied to backend AI engineering.">
+<!-- Image shown in the Twitter / X card. -->
 <meta name="twitter:image" content="https://ernestmwangombe.netlify.app/og-image.png">
+<!-- Colours the browser's address bar on some phones to match the site. -->
 <meta name="theme-color" content="#0B1220">
+<!-- Tells search engines the main address of this page, to avoid duplicates. -->
 <link rel="canonical" href="https://ernestmwangombe.netlify.app/">
+<!-- The small icon in the browser tab. It is an inline SVG (the letter E), so no extra file is needed. -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230B1220%22/><text x=%2250%22 y=%2266%22 font-size=%2250%22 fill=%22%23D4914B%22 text-anchor=%22middle%22 font-family=%22monospace%22>E</text></svg>">
+<!-- Loads style.css, which holds all the design: colours, layout, fonts and animations. -->
 <link rel="stylesheet" href="style.css">
 </head>
+<!-- Everything inside body is what visitors see on the page. -->
 <body>
 
+<!-- The sticky top bar: logo, menu links, and the mobile menu button. The CSS keeps it pinned to the top while you scroll. -->
 <header class="nav">
+  <!-- Centres the bar's content, with the logo on the left and the links on the right. -->
   <div class="nav-inner">
+    <!-- The ERNEST.M logo. Clicking it jumps to the top of the page (the element with id="top"). -->
     <a href="#top" class="logo"><span class="dot"></span>ERNEST.M</a>
+    <!-- The desktop menu. aria-label tells screen readers this is the main navigation. Each link jumps to a section whose id matches (for example #journey goes to id="journey"). script.js underlines the link for whichever section is on screen. -->
     <nav class="nav-links" aria-label="Primary">
       <a href="#journey">Journey</a>
       <a href="#focus">Focus</a>
       <a href="#building">Building</a>
       <a href="#experience">Experience</a>
       <a href="#github">GitHub</a>
+      <!-- The Contact link is styled as an outlined button (class nav-cta). -->
       <a href="#contact" class="nav-cta">Contact</a>
     </nav>
+    <!-- The ☰ button, shown only on phones. script.js opens and closes the mobile menu when it is clicked. aria-expanded tells screen readers whether the menu is open. -->
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   </div>
+  <!-- The dropdown menu for phones. It stays hidden until script.js adds the class 'open'. -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="#journey">Journey</a>
     <a href="#focus">Focus</a>
@@ -48,34 +79,47 @@
   </div>
 </header>
 
+<!-- The main content of the page. id="top" is the target of the logo link. -->
 <main id="top">
 
   <!-- ============ HERO ============ -->
+  <!-- Sheet 01: the hero (first screen). Elements with the class 'reveal' fade in as they scroll into view (script.js plus the CSS). -->
   <section class="hero">
     <div class="wrap">
+      <!-- The bordered 'drawing title block' panel that holds the hero content. -->
       <div class="title-block reveal">
         <div class="title-block-top">
           <div>
             <div class="eyebrow">SHEET 01 — IDENTITY</div>
+            <!-- Your name. There is only one h1 on the page, which is good for accessibility and search engines. -->
             <h1 class="hero-name">Ernest Mlati<br>Mwang'ombe</h1>
+            <!-- The role line: IT Systems Administrator → Backend AI Engineer. -->
             <div class="hero-role"><span>IT Systems Administrator</span> <span class="arrow">→</span> <span>Backend AI Engineer</span></div>
+            <!-- Hero paragraph summarising who you are. -->
             <p class="hero-copy">I combine 10+ years of enterprise IT, infrastructure, and security experience — plus hands-on LLM evaluation work — with a Backend AI Engineering internship at FlyRank (completed October 2026), where I built Node.js/Express microservices, schema-validated data pipelines, and multi-model LLM evaluation frameworks.</p>
+            <!-- The two main buttons. Explore My Work jumps to the Building section. Download CV saves the PDF (the 'download' attribute makes the browser save the file instead of opening it). -->
             <div class="hero-ctas">
               <a href="#building" class="btn btn-primary">Explore My Work</a>
               <a href="Ernest_Mwangombe_CV.pdf" class="btn btn-secondary" download>Download CV ↓</a>
             </div>
+            <!-- Links to GitHub, LinkedIn and email. target="_blank" opens a new tab; rel="noopener" is a security setting for such links. -->
             <div class="hero-socials">
               <a href="https://github.com/ernestmwangombe" target="_blank" rel="noopener">GitHub ↗</a>
               <a href="https://www.linkedin.com/in/ernest-mwangombe-44627578/" target="_blank" rel="noopener">LinkedIn ↗</a>
               <a href="mailto:ernestmwangombe254@gmail.com">Email</a>
             </div>
           </div>
+          <!-- The portrait box on the right of the hero. -->
           <div class="hero-plate">
+            <!-- Your portrait. If the file is missing or its name does not match exactly (Netlify is case-sensitive), the onerror code hides the image and shows the EM initials below instead. -->
             <img src="ernest-portrait.jpg" alt="Portrait of Ernest Mlati Mwang'ombe" class="hero-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <!-- Fallback initials, hidden unless the portrait fails to load. -->
             <div class="initials" style="display:none;">EM</div>
+            <!-- Location and availability text under the portrait. -->
             <div class="plate-label">UKUNDA, KWALE, KE<br>OPEN TO REMOTE / HYBRID</div>
           </div>
         </div>
+        <!-- The four headline numbers under the hero. -->
         <div class="title-block-stats">
           <div class="stat"><div class="num">10+</div><div class="label">Years IT Experience</div></div>
           <div class="stat"><div class="num">15,000+</div><div class="label">Users Supported</div></div>
@@ -87,6 +131,7 @@
   </section>
 
   <!-- ============ EVOLUTION ============ -->
+  <!-- Sheet 02: the career journey. id="journey" is the target of the menu link. The six boxes are the career stages, ending with the current direction. -->
   <section class="section" id="journey">
     <div class="wrap">
       <div class="section-head reveal">
@@ -111,6 +156,7 @@
   </section>
 
   <!-- ============ PHILOSOPHY ============ -->
+  <!-- Philosophy panel: 'AI is the visible 20%, engineering is the other 80%'. This is a positioning idea, not a measured statistic. -->
   <section class="section">
     <div class="wrap">
       <div class="philosophy reveal">
@@ -131,6 +177,7 @@
   </section>
 
   <!-- ============ CURRENT FOCUS ============ -->
+  <!-- Backend AI Engineering: the FlyRank internship and the technology cards. id="focus" is the target of a menu link. -->
   <section class="section" id="focus">
     <div class="wrap">
       <div class="section-head reveal">
@@ -154,6 +201,7 @@
   </section>
 
   <!-- ============ ARCHITECTURE DIAGRAM ============ -->
+  <!-- Sheet 03: the interactive architecture diagram. The empty container with id="layerStack" is filled by script.js from its 'layers' list. -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -174,6 +222,7 @@
   </section>
 
   <!-- ============ WHAT I'M BUILDING ============ -->
+  <!-- Sheet 04: What I'm Building. Each project card has a status badge (IN PROGRESS, BUILT, LIVE) and a link to its repository or live site. -->
   <section class="section" id="building">
     <div class="wrap">
       <div class="section-head reveal">
@@ -249,6 +298,7 @@
   </section>
 
   <!-- ============ NEXT CASE / HOW CASES GET ADDED ============ -->
+  <!-- Sheet 04.1: the next case study and how a case gets added (see ADDING_A_CASE.md). A commented card template inside is ready for when a case is written. -->
   <section class="section" id="cases">
     <div class="wrap">
       <div class="section-head reveal">
@@ -302,6 +352,7 @@
   </section>
 
   <!-- ============ DATA SOVEREIGNTY ============ -->
+  <!-- Sheet 05: Data Sovereignty and Secure AI. -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -320,6 +371,7 @@
   </section>
 
   <!-- ============ EXPERIENCE ============ -->
+  <!-- Sheet 06: Professional Experience. The list is empty here on purpose: script.js builds it from the 'experience' list and puts it in the container with id="expList". -->
   <section class="section" id="experience">
     <div class="wrap">
       <div class="section-head reveal">
@@ -332,6 +384,7 @@
   </section>
 
   <!-- ============ AI EXPERIENCE NARRATIVE ============ -->
+  <!-- Sheet 07: AI evaluation experience. -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -351,6 +404,7 @@
   </section>
 
   <!-- ============ IMPACT METRICS ============ -->
+  <!-- Sheet 08: documented results (the metric numbers). -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -374,6 +428,7 @@
   </section>
 
   <!-- ============ SKILLS ============ -->
+  <!-- Sheet 09: skills grouped by area. The last group is the Backend AI stack from the FlyRank internship. -->
   <section class="section" id="skills">
     <div class="wrap">
       <div class="section-head reveal">
@@ -410,6 +465,7 @@
   </section>
 
   <!-- ============ GITHUB ============ -->
+  <!-- Sheet 10: GitHub activity. script.js fills the grid with id="ghGrid" from the GitHub API, so new public repos appear automatically. -->
   <section class="section" id="github">
     <div class="wrap">
       <div class="section-head reveal">
@@ -427,6 +483,7 @@
   </section>
 
   <!-- ============ EDUCATION / CERTS ============ -->
+  <!-- Sheet 11: education, certifications and FlyRank credentials. Each card links to its verification page or PDF. -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -453,6 +510,7 @@
   </section>
 
   <!-- ============ ABOUT ============ -->
+  <!-- Sheet 12: About. -->
   <section class="section">
     <div class="wrap">
       <div class="section-head reveal">
@@ -469,6 +527,7 @@
   </section>
 
   <!-- ============ CONTACT ============ -->
+  <!-- Sheet 13: contact links and the contact form. id="contact" is the target of the menu link. -->
   <section class="section" id="contact">
     <div class="wrap">
       <div class="section-head reveal">
@@ -480,6 +539,7 @@
         <div class="contact-links">
           <div class="contact-link-row">
             <div><div class="l">EMAIL</div><div class="v">ernestmwangombe254@gmail.com</div></div>
+            <!-- The COPY button. data-copy holds the text that script.js copies to the clipboard. -->
             <button class="copy-btn" data-copy="ernestmwangombe254@gmail.com">COPY</button>
           </div>
           <a class="contact-link-row" href="https://github.com/ernestmwangombe" target="_blank" rel="noopener">
@@ -492,14 +552,21 @@
             <div><div class="l">RESUME</div><div class="v">Download CV (PDF)</div></div><span>↓</span>
           </a>
         </div>
+        <!-- The contact form. There is no server behind it: script.js turns a submission into a mailto: link that opens the visitor's email app. -->
         <form class="contact-form" id="contactForm">
+          <!-- Each label's 'for' matches an input's id, so clicking the label focuses the field and screen readers announce it. -->
           <label for="cf-name">Name</label>
+          <!-- 'required' stops the form being sent while this field is empty. -->
           <input id="cf-name" name="name" type="text" required aria-required="true">
           <label for="cf-email">Email</label>
+          <!-- type="email" makes the browser check the format and show the right keyboard on phones. -->
           <input id="cf-email" name="email" type="email" required aria-required="true">
           <label for="cf-message">Message</label>
+          <!-- A multi-line field, 5 rows tall. -->
           <textarea id="cf-message" name="message" rows="5" required aria-required="true"></textarea>
+          <!-- The submit button. The style attribute aligns it to the left. -->
           <button type="submit" class="btn btn-primary" style="align-self:flex-start;">Send Message</button>
+          <!-- Where script.js shows messages. role="status" and aria-live make screen readers announce changes. -->
           <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
         </form>
       </div>
@@ -508,10 +575,15 @@
 
 </main>
 
+<!-- The footer: copyright line, the FlyRank verify badge, and quick links. -->
 <footer>
+  <!-- The inline style makes this a flexible row that spreads its three items across the width and wraps on small screens. -->
   <div class="wrap" style="width:100%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+    <!-- The copyright line. -->
     <div class="f-left">© 2026 ERNEST MLATI MWANG'OMBE — FROM SYSTEMS TO INTELLIGENT SYSTEMS</div>
+    <!-- FlyRank credential badge. It links to FlyRank's verification page for the completion certificate. -->
     <a class="fr-badge" href="https://internship.flyrank.ai/verify/FR-D11-BB56F-EF423?first_name=Ernest" target="_blank" rel="noopener" aria-label="Verify Ernest's FlyRank AI Internship credential (opens in a new tab)"><span class="dot"></span>FlyRank AI Internship · Verify credential ↗</a>
+    <!-- Quick links: GitHub, LinkedIn, Email and CV. -->
     <div class="f-links">
       <a href="https://github.com/ernestmwangombe" target="_blank" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/ernest-mwangombe-44627578/" target="_blank" rel="noopener">LinkedIn</a>
@@ -521,8 +593,10 @@
   </div>
 </footer>
 
+<!-- The ↑ button fixed to the bottom-right corner. script.js shows it after you scroll down and scrolls to the top when it is clicked. -->
 <button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
+<!-- Loads script.js last, after the page content exists. It adds all the interactivity. -->
 <script src="script.js"></script>
 </body>
 </html>

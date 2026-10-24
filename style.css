@@ -3,784 +3,999 @@
    Design concept: engineering blueprint / technical drawing sheet
    ========================================================= */
 
+/* Load the three web fonts (Space Grotesk, Inter, JetBrains Mono) from Google Fonts. */
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
+/* Design tokens: named values (CSS variables) reused across the whole file. Change a colour or font here and it updates everywhere. */
 :root {
-  --bg: #0B1220;
-  --panel: #131C2B;
-  --panel-raised: #182338;
-  --grid-line: #22344A;
-  --grid-line-soft: #1A2738;
-  --text: #E7ECEF;
-  --text-dim: #8CA0B3;
-  --text-faint: #5C7288;
-  --steel: #5B9BD5;
-  --steel-dim: #3A6690;
-  --copper: #D4914B;
-  --copper-dim: #8A5F32;
-  --ok: #6FBF8B;
-  --border: #223449;
-  --radius: 3px;
-  --display: 'Space Grotesk', sans-serif;
-  --body: 'Inter', sans-serif;
-  --mono: 'JetBrains Mono', monospace;
-  --max: 1140px;
+  --bg: #0B1220;  /* page background (near-black navy) */
+  --panel: #131C2B;  /* background of cards and panels */
+  --panel-raised: #182338;  /* slightly lighter panel background (hover and raised areas) */
+  --grid-line: #22344A;  /* blueprint grid / divider line colour */
+  --grid-line-soft: #1A2738;  /* fainter grid line colour for the page-wide background grid */
+  --text: #E7ECEF;  /* main text colour (off-white) */
+  --text-dim: #8CA0B3;  /* muted text colour for paragraphs */
+  --text-faint: #5C7288;  /* faintest text colour for labels and captions */
+  --steel: #5B9BD5;  /* primary accent: steel blue (links, established systems content) */
+  --steel-dim: #3A6690;  /* darker steel blue for borders */
+  --copper: #D4914B;  /* secondary accent: copper (current focus, calls to action) */
+  --copper-dim: #8A5F32;  /* darker copper for borders */
+  --ok: #6FBF8B;  /* green for success and live states */
+  --border: #223449;  /* standard border colour */
+  --radius: 3px;  /* standard small corner radius */
+  --display: 'Space Grotesk', sans-serif;  /* heading font: Space Grotesk */
+  --body: 'Inter', sans-serif;  /* body text font: Inter */
+  --mono: 'JetBrains Mono', monospace;  /* monospace font for labels, numbers and code: JetBrains Mono */
+  --max: 1140px;  /* maximum content width of the page */
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* Reset: remove the browser's default spacing on every element and make widths include padding and borders (border-box), so layouts behave predictably. */
+* { box-sizing: border-box; margin: 0; padding: 0; }  /* padding and border count inside the width and height; outer spacing: 0 on all sides; inner spacing: 0 on all sides */
 
-html { scroll-behavior: smooth; }
+/* Makes jumping to a #section scroll smoothly instead of snapping. */
+html { scroll-behavior: smooth; }  /* smooth scrolling for #links */
 
+/* Accessibility: if the visitor's device asks for reduced motion, the rules inside turn animations and smooth scrolling off. */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  /* Turns smooth scrolling off for people who prefer reduced motion. */
+  html { scroll-behavior: auto; }  /* normal (instant) scrolling */
+  /* Cuts every animation and transition to near-instant for reduced-motion users. */
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;  /* make animations effectively instant (overrides other rules) */
+    animation-iteration-count: 1 !important;  /* play animations only once (overrides other rules) */
+    transition-duration: 0.01ms !important;  /* make transitions effectively instant (overrides other rules) */
+    scroll-behavior: auto !important;  /* normal (instant) scrolling */
   }
 }
 
+/* Page-wide defaults: background colour, text colour, font, size, line spacing, and no sideways scrolling. */
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--body);
-  font-size: 16px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  background: var(--bg);  /* background colour: page background */
+  color: var(--text);  /* text colour: main text colour */
+  font-family: var(--body);  /* body font (Inter) */
+  font-size: 16px;  /* text size 16px */
+  line-height: 1.6;  /* line spacing 1.6 times the text size */
+  -webkit-font-smoothing: antialiased;  /* smoother text rendering on Mac and iOS */
+  overflow-x: hidden;  /* hide anything that spills out sideways (no horizontal scrollbar) */
 }
 
+/* A decorative layer behind everything: the faint blueprint grid. It is fixed to the screen, ignores clicks, and sits at the very back. */
 body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
+  content: '';  /* empty content: the element is purely a decoration */
+  position: fixed;  /* fixed in place on the screen */
+  inset: 0;  /* stretch to all four edges */
+  /* Draws the blueprint grid: two thin gradients (one horizontal, one vertical) layered together. */
   background-image:
     linear-gradient(var(--grid-line-soft) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid-line-soft) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.35;
-  pointer-events: none;
-  z-index: 0;
+  background-size: 48px 48px;  /* size of each grid square: 48px 48px */
+  opacity: 0.35;  /* transparency: 0.35 (0 invisible, 1 fully visible) */
+  pointer-events: none;  /* ignore mouse clicks (they pass through) */
+  z-index: 0;  /* stacking order 0: higher numbers sit in front */
 }
 
-img { max-width: 100%; display: block; }
-a { color: inherit; text-decoration: none; }
-button { font-family: inherit; cursor: pointer; }
-ul { list-style: none; }
+/* Images never grow wider than their container and are laid out as blocks. */
+img { max-width: 100%; display: block; }  /* never wider than 100%; show as a block (own line) */
+/* Links inherit the surrounding text colour and have no underline by default. */
+a { color: inherit; text-decoration: none; }  /* text colour: inherit; no underline */
+/* Buttons use the page font and show a pointer cursor. */
+button { font-family: inherit; cursor: pointer; }  /* use the same font as the surrounding text; show the pointing-hand cursor */
+/* Lists have no bullets by default (bullets are added back where needed). */
+ul { list-style: none; }  /* remove the bullet markers */
 
-.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+/* Centres page content, limits its width to the maximum content width, and adds side padding. */
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }  /* never wider than var(--max); centre horizontally (no top/bottom margin, automatic left/right); inner spacing: 0 top and bottom, 24px left and right; positioned relative to its normal spot, so children can be placed inside it; stacking order 1: higher numbers sit in front */
 
-h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; }
+/* All headings use the display font, a semi-bold weight, and slightly tightened letter spacing. */
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; letter-spacing: -0.01em; }  /* heading font (Space Grotesk); font weight 600 (400 normal, 600 semi-bold, 700 bold); space between letters: -0.01em */
 
+/* Small uppercase label above section titles, such as 'SHEET 04 — CURRENT WORK'. Monospace font in the copper accent colour. */
 .eyebrow {
-  font-family: var(--mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--copper);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 12px;  /* text size 12px */
+  letter-spacing: 0.12em;  /* space between letters: 0.12em */
+  text-transform: uppercase;  /* show text in capitals */
+  color: var(--copper);  /* text colour: copper */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 10px;  /* space between items: 10px */
+  margin-bottom: 14px;  /* space below: 14px */
 }
+/* A short copper line drawn before the label text (a pseudo-element: an extra piece made by CSS, not in the HTML). */
 .eyebrow::before {
-  content: '';
-  width: 22px;
-  height: 1px;
-  background: var(--copper);
+  content: '';  /* empty content: the element is purely a decoration */
+  width: 22px;  /* width 22px */
+  height: 1px;  /* height 1px */
+  background: var(--copper);  /* background colour: copper */
 }
 
+/* Every full-width page section: vertical padding, a bottom divider line, and 'relative' positioning so the corner marks can be placed inside it. */
 .section {
-  position: relative;
-  padding: 88px 0;
-  border-bottom: 1px solid var(--grid-line);
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
+  padding: 88px 0;  /* inner spacing: 88px top and bottom, 0 left and right */
+  border-bottom: 1px solid var(--grid-line);  /* 1px solid border along the bottom in grid line colour */
 }
-.section-head { max-width: 640px; margin-bottom: 48px; }
-.section-head h2 { font-size: clamp(28px, 3.4vw, 40px); margin-bottom: 14px; }
-.section-head p { color: var(--text-dim); font-size: 17px; }
+/* The title block at the top of each section: limits its width and adds space below. */
+.section-head { max-width: 640px; margin-bottom: 48px; }  /* never wider than 640px; space below: 48px */
+/* Section title size; it scales with the screen width using clamp(). */
+.section-head h2 { font-size: clamp(28px, 3.4vw, 40px); margin-bottom: 14px; }  /* text size that scales with the screen width: clamp(28px, 3.4vw, 40px); space below: 14px */
+/* Intro paragraph under each section title: muted colour and slightly larger text. */
+.section-head p { color: var(--text-dim); font-size: 17px; }  /* text colour: muted text colour; text size 17px */
 
 /* corner registration marks — blueprint sheet motif */
 .section::after,
+/* Places the left '+' mark. */
 .section::before {
-  content: '+';
-  position: absolute;
-  top: 18px;
-  font-family: var(--mono);
-  color: var(--grid-line);
-  font-size: 14px;
+  content: '+';  /* text drawn by CSS: '+' */
+  position: absolute;  /* placed precisely inside the nearest positioned parent */
+  top: 18px;  /* 18px from the top edge */
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  color: var(--grid-line);  /* text colour: grid line colour */
+  font-size: 14px;  /* text size 14px */
 }
-.section::before { left: 18px; }
-.section::after { right: 18px; }
+/* Places the left '+' mark. */
+.section::before { left: 18px; }  /* 18px from the left edge */
+/* Places the right '+' mark. */
+.section::after { right: 18px; }  /* 18px from the right edge */
 
+/* Small sheet-number label positioned in a section's bottom-right corner. */
 .sheet-id {
-  position: absolute;
-  bottom: 16px;
-  right: 18px;
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-faint);
-  letter-spacing: 0.08em;
+  position: absolute;  /* placed precisely inside the nearest positioned parent */
+  bottom: 16px;  /* 16px from the bottom edge */
+  right: 18px;  /* 18px from the right edge */
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 10px;  /* text size 10px */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  letter-spacing: 0.08em;  /* space between letters: 0.08em */
 }
 
 /* ---------- NAV ---------- */
+/* The sticky top bar: stays at the top while scrolling, semi-transparent with a blur behind it. */
 header.nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(11, 18, 32, 0.88);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--border);
+  position: sticky;  /* sticks to the top while scrolling */
+  top: 0;  /* 0 from the top edge */
+  z-index: 50;  /* stacking order 50: higher numbers sit in front */
+  background: rgba(11, 18, 32, 0.88);  /* background colour: a semi-transparent colour */
+  backdrop-filter: blur(10px);  /* frosted-glass effect: blur(10px) blurs whatever is behind the element */
+  border-bottom: 1px solid var(--border);  /* 1px solid border along the bottom in border colour */
 }
+/* Layout inside the top bar: logo on the left, links on the right, centred to the page width. */
 .nav-inner {
-  max-width: var(--max);
-  margin: 0 auto;
-  padding: 16px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  max-width: var(--max);  /* never wider than var(--max) */
+  margin: 0 auto;  /* centre horizontally (no top/bottom margin, automatic left/right) */
+  padding: 16px 24px;  /* inner spacing: 16px top and bottom, 24px left and right */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  justify-content: space-between;  /* spread items to the two ends with equal gaps */
 }
+/* The ERNEST.M logo text: monospace, with the dot beside it. */
 .logo {
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 15px;  /* text size 15px */
+  font-weight: 600;  /* font weight 600 (400 normal, 600 semi-bold, 700 bold) */
+  letter-spacing: 0.04em;  /* space between letters: 0.04em */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 8px;  /* space between items: 8px */
 }
-.logo .dot { width: 7px; height: 7px; background: var(--copper); border-radius: 50%; }
-.nav-links { display: flex; gap: 28px; align-items: center; }
+/* The small copper dot in the logo. */
+.logo .dot { width: 7px; height: 7px; background: var(--copper); border-radius: 50%; }  /* width 7px; height 7px; background colour: copper; fully round (a circle) */
+/* Container for the top menu links: laid out in a row with space between them. */
+.nav-links { display: flex; gap: 28px; align-items: center; }  /* lay children out in a flexible row; space between items: 28px; centre items on the cross axis (vertically in a row) */
+/* Each top menu link: small muted text that changes colour on hover. */
 .nav-links a {
-  font-size: 14px;
-  color: var(--text-dim);
-  transition: color 0.15s;
-  position: relative;
+  font-size: 14px;  /* text size 14px */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  transition: color 0.15s;  /* animate changes smoothly: color 0.15s */
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
 }
-.nav-links a:hover, .nav-links a.active { color: var(--text); }
+/* Hovered link, or the link for the section currently on screen: brighter text. */
+.nav-links a:hover, .nav-links a.active { color: var(--text); }  /* text colour: main text colour */
+/* The thin copper underline under the active link. */
 .nav-links a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -6px; left: 0;
-  width: 100%; height: 1px;
-  background: var(--copper);
+  content: '';  /* empty content: the element is purely a decoration */
+  position: absolute;  /* placed precisely inside the nearest positioned parent */
+  bottom: -6px; left: 0;  /* -6px from the bottom edge; 0 from the left edge */
+  width: 100%; height: 1px;  /* width 100%; height 1px */
+  background: var(--copper);  /* background colour: copper */
 }
+/* The outlined 'Contact' button in the menu. */
 .nav-cta {
-  font-family: var(--mono);
-  font-size: 13px;
-  border: 1px solid var(--steel-dim);
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  color: var(--steel);
-  transition: all 0.15s;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 13px;  /* text size 13px */
+  border: 1px solid var(--steel-dim);  /* 1px solid border on all sides in dim steel blue */
+  padding: 8px 16px;  /* inner spacing: 8px top and bottom, 16px left and right */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  color: var(--steel);  /* text colour: steel blue */
+  transition: all 0.15s;  /* animate changes smoothly: all 0.15s */
 }
-.nav-cta:hover { background: var(--steel); color: var(--bg); }
-.nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 22px; }
+/* On hover the Contact button fills with steel blue. */
+.nav-cta:hover { background: var(--steel); color: var(--bg); }  /* background colour: steel blue; text colour: page background */
+/* The ☰ menu button. Hidden on large screens; it is shown only on phones (see the media query below). */
+.nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 22px; }  /* hide the element; background colour: none; no border on all sides; text colour: main text colour; text size 22px */
 
+/* On screens 860px wide or narrower (tablets and phones): hide the full menu and show the ☰ button instead. */
 @media (max-width: 860px) {
-  .nav-links { display: none; }
-  .nav-toggle { display: block; }
+  /* Hide the row of top links on small screens. */
+  .nav-links { display: none; }  /* hide the element */
+  /* Show the ☰ button on small screens. */
+  .nav-toggle { display: block; }  /* show as a block (own line) */
 }
 
 /* ---------- HERO ---------- */
+/* The top section of the page: spacing and a bottom divider. */
 .hero {
-  padding: 72px 0 96px;
-  border-bottom: 1px solid var(--grid-line);
-  position: relative;
+  padding: 72px 0 96px;  /* inner spacing: 72px top, 0 left and right, 96px bottom */
+  border-bottom: 1px solid var(--grid-line);  /* 1px solid border along the bottom in grid line colour */
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
 }
+/* The bordered 'drawing title block' panel that holds the hero content. */
 .title-block {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: var(--radius);
-  overflow: hidden;
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  overflow: hidden;  /* hide anything that spills outside the box */
 }
+/* The upper part of the title block: text on the left, portrait plate on the right, wrapping on narrow screens. */
 .title-block-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 40px 40px 32px;
-  gap: 32px;
-  flex-wrap: wrap;
+  display: flex;  /* lay children out in a flexible row */
+  justify-content: space-between;  /* spread items to the two ends with equal gaps */
+  align-items: flex-start;  /* align items to the start of the cross axis */
+  padding: 40px 40px 32px;  /* inner spacing: 40px top, 40px left and right, 32px bottom */
+  gap: 32px;  /* space between items: 32px */
+  flex-wrap: wrap;  /* allow items to wrap onto a new line */
 }
+/* Your name: very large heading that scales with the screen width. */
 .hero-name {
-  font-size: clamp(34px, 5vw, 56px);
-  line-height: 1.05;
-  margin-bottom: 14px;
+  font-size: clamp(34px, 5vw, 56px);  /* text size that scales with the screen width: clamp(34px, 5vw, 56px) */
+  line-height: 1.05;  /* line spacing 1.05 times the text size */
+  margin-bottom: 14px;  /* space below: 14px */
 }
+/* The 'IT Systems Administrator → Backend AI Engineer' line in monospace and steel blue. */
 .hero-role {
-  font-family: var(--mono);
-  font-size: clamp(14px, 1.6vw, 17px);
-  color: var(--steel);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 22px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: clamp(14px, 1.6vw, 17px);  /* text size that scales with the screen width: clamp(14px, 1.6vw, 17px) */
+  color: var(--steel);  /* text colour: steel blue */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 10px;  /* space between items: 10px */
+  flex-wrap: wrap;  /* allow items to wrap onto a new line */
+  margin-bottom: 22px;  /* space below: 22px */
 }
-.hero-role .arrow { color: var(--copper); }
-.hero-copy { max-width: 560px; color: var(--text-dim); font-size: 16.5px; margin-bottom: 28px; }
-.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+/* The → arrow in copper. */
+.hero-role .arrow { color: var(--copper); }  /* text colour: copper */
+/* Hero paragraph: muted colour, limited width so lines stay readable. */
+.hero-copy { max-width: 560px; color: var(--text-dim); font-size: 16.5px; margin-bottom: 28px; }  /* never wider than 560px; text colour: muted text colour; text size 16.5px; space below: 28px */
+/* The row holding the two hero buttons; wraps on narrow screens. */
+.hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }  /* lay children out in a flexible row; space between items: 12px; allow items to wrap onto a new line; space below: 24px */
 
+/* Shared button shape: monospace text, padding, rounded corners, and a smooth transition on hover. */
 .btn {
-  font-family: var(--mono);
-  font-size: 13.5px;
-  padding: 12px 22px;
-  border-radius: var(--radius);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.15s;
-  border: 1px solid transparent;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 13.5px;  /* text size 13.5px */
+  padding: 12px 22px;  /* inner spacing: 12px top and bottom, 22px left and right */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  display: inline-flex;  /* inline flexible box */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 8px;  /* space between items: 8px */
+  transition: all 0.15s;  /* animate changes smoothly: all 0.15s */
+  border: 1px solid transparent;  /* 1px solid border on all sides in transparent */
 }
-.btn-primary { background: var(--copper); color: #1A1206; font-weight: 600; }
-.btn-primary:hover { background: #e6a25c; }
-.btn-secondary { border-color: var(--border); color: var(--text); }
-.btn-secondary:hover { border-color: var(--steel); color: var(--steel); }
-.btn-ghost { color: var(--text-dim); }
-.btn-ghost:hover { color: var(--text); }
+/* Main button (Explore My Work): filled copper with dark text. */
+.btn-primary { background: var(--copper); color: #1A1206; font-weight: 600; }  /* background colour: copper; text colour: the colour #1A1206; font weight 600 (400 normal, 600 semi-bold, 700 bold) */
+/* Lighter copper on hover. */
+.btn-primary:hover { background: #e6a25c; }  /* background colour: the colour #e6a25c */
+/* Secondary button (Download CV): outlined. */
+.btn-secondary { border-color: var(--border); color: var(--text); }  /* border colour: border colour; text colour: main text colour */
+/* Outline and text turn steel blue on hover. */
+.btn-secondary:hover { border-color: var(--steel); color: var(--steel); }  /* border colour: steel blue; text colour: steel blue */
+/* Text-only button style (no border). */
+.btn-ghost { color: var(--text-dim); }  /* text colour: muted text colour */
+/* Text brightens on hover. */
+.btn-ghost:hover { color: var(--text); }  /* text colour: main text colour */
 
-.hero-socials { display: flex; gap: 18px; }
+/* Row of GitHub / LinkedIn / Email links under the buttons. */
+.hero-socials { display: flex; gap: 18px; }  /* lay children out in a flexible row; space between items: 18px */
+/* Each social link: small muted text with a gap between items. */
 .hero-socials a {
-  font-size: 13px;
-  color: var(--text-dim);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: color 0.15s;
+  font-size: 13px;  /* text size 13px */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 6px;  /* space between items: 6px */
+  transition: color 0.15s;  /* animate changes smoothly: color 0.15s */
 }
-.hero-socials a:hover { color: var(--steel); }
+/* Turns steel blue on hover. */
+.hero-socials a:hover { color: var(--steel); }  /* text colour: steel blue */
 
+/* The box on the right of the hero that holds your portrait and the location label. */
 .hero-plate {
-  width: 190px;
-  flex-shrink: 0;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  background: var(--panel-raised);
-  text-align: center;
+  width: 190px;  /* width 190px */
+  flex-shrink: 0;  /* do not shrink when space is tight */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  padding: 18px;  /* inner spacing: 18px on all sides */
+  background: var(--panel-raised);  /* background colour: raised panel colour */
+  text-align: center;  /* center-align text */
 }
+/* Fallback 'EM' circle, shown only if the portrait image fails to load. */
 .hero-plate .initials {
-  width: 96px; height: 96px;
-  margin: 0 auto 14px;
-  border-radius: 50%;
-  border: 1px solid var(--steel-dim);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--display);
-  font-size: 30px;
-  color: var(--steel);
-  background: radial-gradient(circle at 30% 20%, rgba(91,155,213,0.15), transparent 70%);
+  width: 96px; height: 96px;  /* width 96px; height 96px */
+  margin: 0 auto 14px;  /* outer spacing: 0 top, auto left and right, 14px bottom */
+  border-radius: 50%;  /* fully round (a circle) */
+  border: 1px solid var(--steel-dim);  /* 1px solid border on all sides in dim steel blue */
+  display: flex; align-items: center; justify-content: center;  /* lay children out in a flexible row; centre items on the cross axis (vertically in a row); centre items along the main axis */
+  font-family: var(--display);  /* heading font (Space Grotesk) */
+  font-size: 30px;  /* text size 30px */
+  color: var(--steel);  /* text colour: steel blue */
+  background: radial-gradient(circle at 30% 20%, rgba(91,155,213,0.15), transparent 70%);  /* soft radial colour glow */
 }
+/* Your portrait: a 96px circle. 'object-fit: cover' crops the image to fill the circle without stretching, anchored at the top so your face stays in view. */
 .hero-plate .hero-photo {
-  width: 96px; height: 96px;
-  margin: 0 auto 14px;
-  border-radius: 50%;
-  border: 1px solid var(--steel-dim);
-  object-fit: cover;
-  object-position: center top;
-  filter: grayscale(15%) contrast(1.05);
+  width: 96px; height: 96px;  /* width 96px; height 96px */
+  margin: 0 auto 14px;  /* outer spacing: 0 top, auto left and right, 14px bottom */
+  border-radius: 50%;  /* fully round (a circle) */
+  border: 1px solid var(--steel-dim);  /* 1px solid border on all sides in dim steel blue */
+  object-fit: cover;  /* crop the image to fill its box without stretching */
+  object-position: center top;  /* anchor the crop at: center top */
+  filter: grayscale(15%) contrast(1.05);  /* image tweak: grayscale(15%) contrast(1.05) */
 }
+/* The small location text under the portrait. */
 .hero-plate .plate-label {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: var(--text-faint);
-  letter-spacing: 0.08em;
-  line-height: 1.6;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 10px;  /* text size 10px */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  letter-spacing: 0.08em;  /* space between letters: 0.08em */
+  line-height: 1.6;  /* line spacing 1.6 times the text size */
 }
 
+/* The row of four headline numbers (10+, 15,000+, 99.9%, 300k+): a 4-column grid with a top divider. */
 .title-block-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border-top: 1px solid var(--border);
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: repeat(4, 1fr);  /* 4 equal columns */
+  border-top: 1px solid var(--border);  /* 1px solid border on the top in border colour */
 }
+/* One stat cell: padding and a divider on its right. */
 .stat {
-  padding: 22px 24px;
-  border-right: 1px solid var(--border);
+  padding: 22px 24px;  /* inner spacing: 22px top and bottom, 24px left and right */
+  border-right: 1px solid var(--border);  /* 1px solid border on the right in border colour */
 }
-.stat:last-child { border-right: none; }
+/* The last stat has no right divider. */
+.stat:last-child { border-right: none; }  /* no border on the right */
+/* The big number in a stat cell (monospace, copper, scales with the screen width). */
 .stat .num {
-  font-family: var(--mono);
-  font-size: clamp(20px, 2.4vw, 26px);
-  color: var(--copper);
-  font-weight: 600;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: clamp(20px, 2.4vw, 26px);  /* text size that scales with the screen width: clamp(20px, 2.4vw, 26px) */
+  color: var(--copper);  /* text colour: copper */
+  font-weight: 600;  /* font weight 600 (400 normal, 600 semi-bold, 700 bold) */
 }
-.stat .label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
+/* The small caption under the number. */
+.stat .label { font-size: 12px; color: var(--text-dim); margin-top: 4px; }  /* text size 12px; text colour: muted text colour; space above: 4px */
 
+/* On narrow phones: show the stats as 2 columns instead of 4. */
 @media (max-width: 700px) {
-  .title-block-stats { grid-template-columns: repeat(2, 1fr); }
-  .stat:nth-child(2) { border-right: none; }
-  .stat { border-bottom: 1px solid var(--border); }
+  /* Switch to 2 columns. */
+  .title-block-stats { grid-template-columns: repeat(2, 1fr); }  /* 2 equal columns */
+  /* Remove the divider after the 2nd stat, since it now ends a row. */
+  .stat:nth-child(2) { border-right: none; }  /* no border on the right */
+  /* Add a divider under each stat instead, because they now stack in rows. */
+  .stat { border-bottom: 1px solid var(--border); }  /* 1px solid border along the bottom in border colour */
 }
 
 /* ---------- EVOLUTION TIMELINE ---------- */
+/* The row of six career-stage boxes (IT Support → ... → Backend AI Engineering): a flex row that scrolls sideways if it does not fit. */
 .evolution-track {
-  display: flex;
-  align-items: stretch;
-  gap: 0;
-  overflow-x: auto;
-  padding-bottom: 8px;
+  display: flex;  /* lay children out in a flexible row */
+  align-items: stretch;  /* stretch items to equal height */
+  gap: 0;  /* space between items: 0 */
+  overflow-x: auto;  /* scroll sideways if the content is too wide */
+  padding-bottom: 8px;  /* inner spacing at the bottom: 8px */
 }
+/* One career-stage box: bordered panel with a minimum width. The negative right margin overlaps borders so neighbours share one line. */
 .evo-step {
-  flex: 1 0 150px;
-  min-width: 150px;
-  padding: 20px 16px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  position: relative;
-  margin-right: -1px;
+  flex: 1 0 150px;  /* flex sizing (grow shrink base): 1 0 150px */
+  min-width: 150px;  /* never narrower than 150px */
+  padding: 20px 16px;  /* inner spacing: 20px top and bottom, 16px left and right */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
+  margin-right: -1px;  /* space on the right: -1px */
 }
-.evo-step .n { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-bottom: 10px; }
-.evo-step h4 { font-size: 15px; margin-bottom: 6px; }
-.evo-step p { font-size: 12.5px; color: var(--text-dim); }
-.evo-step.current { border-color: var(--copper); background: rgba(212,145,75,0.06); }
-.evo-step.current h4 { color: var(--copper); }
+/* Step number (01, 02, ...). */
+.evo-step .n { font-family: var(--mono); font-size: 11px; color: var(--text-faint); margin-bottom: 10px; }  /* monospace font (JetBrains Mono); text size 11px; text colour: faint text colour; space below: 10px */
+/* Step title. */
+.evo-step h4 { font-size: 15px; margin-bottom: 6px; }  /* text size 15px; space below: 6px */
+/* Step description text. */
+.evo-step p { font-size: 12.5px; color: var(--text-dim); }  /* text size 12.5px; text colour: muted text colour */
+/* The final, current step is highlighted in copper. */
+.evo-step.current { border-color: var(--copper); background: rgba(212,145,75,0.06); }  /* border colour: copper; background colour: a semi-transparent colour */
+/* Copper title for the current step. */
+.evo-step.current h4 { color: var(--copper); }  /* text colour: copper */
+/* The → arrows between steps. */
 .evo-arrow {
-  flex: 0 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-faint);
-  font-family: var(--mono);
+  flex: 0 0 24px;  /* flex sizing (grow shrink base): 0 0 24px */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  justify-content: center;  /* centre items along the main axis */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
 }
 
 /* ---------- PHILOSOPHY ---------- */
+/* The '20% / 80%' panel: two columns (quote on the left, bars on the right). */
 .philosophy {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 48px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  align-items: center;
+  background: var(--panel);  /* background colour: panel colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  padding: 48px;  /* inner spacing: 48px on all sides */
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: 1fr 1fr;  /* 2 equal columns */
+  gap: 48px;  /* space between items: 48px */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
 }
+/* The big quote text. */
 .philosophy blockquote {
-  font-family: var(--display);
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.35;
+  font-family: var(--display);  /* heading font (Space Grotesk) */
+  font-size: clamp(22px, 2.6vw, 30px);  /* text size that scales with the screen width: clamp(22px, 2.6vw, 30px) */
+  line-height: 1.35;  /* line spacing 1.35 times the text size */
 }
-.philosophy blockquote .hl-ai { color: var(--copper); }
-.philosophy blockquote .hl-eng { color: var(--steel); }
-.philo-bar-wrap { font-family: var(--mono); font-size: 13px; }
-.philo-bar-row { margin-bottom: 18px; }
-.philo-bar-row .row-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-dim); }
-.philo-bar-track { height: 8px; background: var(--grid-line-soft); border-radius: 4px; overflow: hidden; }
-.philo-bar-fill { height: 100%; border-radius: 4px; }
-.philo-bar-fill.ai { width: 20%; background: var(--copper); }
-.philo-bar-fill.eng { width: 80%; background: var(--steel); }
-.philo-note { color: var(--text-faint); font-size: 12px; margin-top: 14px; font-family: var(--body); }
+/* The '20%' word in copper. */
+.philosophy blockquote .hl-ai { color: var(--copper); }  /* text colour: copper */
+/* The '80%' word in steel blue. */
+.philosophy blockquote .hl-eng { color: var(--steel); }  /* text colour: steel blue */
+/* Container for the two bars (monospace text). */
+.philo-bar-wrap { font-family: var(--mono); font-size: 13px; }  /* monospace font (JetBrains Mono); text size 13px */
+/* One bar with its label. */
+.philo-bar-row { margin-bottom: 18px; }  /* space below: 18px */
+/* Label row: name on the left, percentage on the right. */
+.philo-bar-row .row-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-dim); }  /* lay children out in a flexible row; spread items to the two ends with equal gaps; space below: 6px; text colour: muted text colour */
+/* The dark track behind a bar. */
+.philo-bar-track { height: 8px; background: var(--grid-line-soft); border-radius: 4px; overflow: hidden; }  /* height 8px; background colour: faint grid line colour; rounded corners: 4px; hide anything that spills outside the box */
+/* The coloured part of a bar. */
+.philo-bar-fill { height: 100%; border-radius: 4px; }  /* height 100%; rounded corners: 4px */
+/* AI bar: 20% wide, copper. */
+.philo-bar-fill.ai { width: 20%; background: var(--copper); }  /* width 20%; background colour: copper */
+/* Engineering bar: 80% wide, steel blue. */
+.philo-bar-fill.eng { width: 80%; background: var(--steel); }  /* width 80%; background colour: steel blue */
+/* Small footnote under the bars saying this is a positioning concept, not a statistic. */
+.philo-note { color: var(--text-faint); font-size: 12px; margin-top: 14px; font-family: var(--body); }  /* text colour: faint text colour; text size 12px; space above: 14px; body font (Inter) */
 
+/* On tablets and phones: stack the philosophy panel into one column. */
 @media (max-width: 800px) {
-  .philosophy { grid-template-columns: 1fr; }
+  /* One column. */
+  .philosophy { grid-template-columns: 1fr; }  /* a single column */
 }
 
 /* ---------- FOCUS CARDS ---------- */
+/* The small pill label ('COMPLETED INTERNSHIP — FLYRANK'): bordered, rounded, copper text. */
 .focus-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 4px 10px;
-  border: 1px solid var(--copper-dim);
-  color: var(--copper);
-  border-radius: 20px;
-  margin-bottom: 24px;
+  display: inline-flex;  /* inline flexible box */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 6px;  /* space between items: 6px */
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11px;  /* text size 11px */
+  padding: 4px 10px;  /* inner spacing: 4px top and bottom, 10px left and right */
+  border: 1px solid var(--copper-dim);  /* 1px solid border on all sides in dim copper */
+  color: var(--copper);  /* text colour: copper */
+  border-radius: 20px;  /* rounded corners: 20px */
+  margin-bottom: 24px;  /* space below: 24px */
 }
-.focus-tag .dot { width: 5px; height: 5px; background: var(--copper); border-radius: 50%; }
+/* The tiny dot inside the pill. */
+.focus-tag .dot { width: 5px; height: 5px; background: var(--copper); border-radius: 50%; }  /* width 5px; height 5px; background colour: copper; fully round (a circle) */
 
+/* Grid of cards (stack, security, AI evaluation, credentials). 'auto-fit' with 'minmax' fits as many columns as the width allows. The 1px gap on a coloured background draws the thin lines between cards. */
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));  /* as many equal columns as fit (each at least the minimum in minmax): repeat(auto-fit, minmax(220px, 1fr)) */
+  gap: 1px;  /* space between items: 1px */
+  background: var(--border);  /* background colour: border colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
 }
+/* One card inside a card grid. */
 .stack-card {
-  background: var(--panel);
-  padding: 26px;
+  background: var(--panel);  /* background colour: panel colour */
+  padding: 26px;  /* inner spacing: 26px on all sides */
 }
+/* The tiny uppercase label at the top of a card (RUNTIME, CERT, ...). */
 .stack-card .icon-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--text-faint);
-  margin-bottom: 12px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11px;  /* text size 11px */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  margin-bottom: 12px;  /* space below: 12px */
 }
-.stack-card h4 { font-size: 17px; margin-bottom: 8px; }
-.stack-card p { font-size: 13.5px; color: var(--text-dim); }
+/* Card title. */
+.stack-card h4 { font-size: 17px; margin-bottom: 8px; }  /* text size 17px; space below: 8px */
+/* Card text. */
+.stack-card p { font-size: 13.5px; color: var(--text-dim); }  /* text size 13.5px; text colour: muted text colour */
 
+/* Callout box with a steel-blue left border. */
 .track-note {
-  margin-top: 28px;
-  padding: 20px 24px;
-  border-left: 2px solid var(--steel);
-  background: var(--panel);
-  font-size: 14.5px;
-  color: var(--text-dim);
+  margin-top: 28px;  /* space above: 28px */
+  padding: 20px 24px;  /* inner spacing: 20px top and bottom, 24px left and right */
+  border-left: 2px solid var(--steel);  /* 2px solid border on the left in steel blue */
+  background: var(--panel);  /* background colour: panel colour */
+  font-size: 14.5px;  /* text size 14.5px */
+  color: var(--text-dim);  /* text colour: muted text colour */
 }
-.track-note strong { color: var(--text); }
+/* Bold text inside the callout is full white. */
+.track-note strong { color: var(--text); }  /* text colour: main text colour */
 
 /* ---------- ARCHITECTURE DIAGRAM (signature element) ---------- */
+/* Outer panel around the architecture diagram. */
 .diagram-wrap {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  border-radius: var(--radius);
-  padding: 40px;
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  padding: 40px;  /* inner spacing: 40px on all sides */
 }
+/* Small centred instruction above the diagram ('CLICK ANY LAYER TO EXPAND'). */
 .diagram-hint {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--text-faint);
-  text-align: center;
-  margin-bottom: 28px;
-  letter-spacing: 0.04em;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11.5px;  /* text size 11.5px */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  text-align: center;  /* center-align text */
+  margin-bottom: 28px;  /* space below: 28px */
+  letter-spacing: 0.04em;  /* space between letters: 0.04em */
 }
+/* Column that holds the 8 layer rows, centred and width-limited. */
 .layer-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  max-width: 640px;
-  margin: 0 auto;
+  display: flex;  /* lay children out in a flexible row */
+  flex-direction: column;  /* stack children in a column */
+  gap: 0;  /* space between items: 0 */
+  max-width: 640px;  /* never wider than 640px */
+  margin: 0 auto;  /* centre horizontally (no top/bottom margin, automatic left/right) */
 }
+/* One clickable layer row of the diagram: items in a row, a pointer cursor, and a hover effect. */
 .layer {
-  border: 1px solid var(--border);
-  margin-top: -1px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  background: var(--panel-raised);
-  position: relative;
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  margin-top: -1px;  /* space above: -1px */
+  padding: 16px 20px;  /* inner spacing: 16px top and bottom, 20px left and right */
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 18px;  /* space between items: 18px */
+  cursor: pointer;  /* show the pointing-hand cursor */
+  transition: background 0.15s, border-color 0.15s;  /* animate changes smoothly: background 0.15s, border-color 0.15s */
+  background: var(--panel-raised);  /* background colour: raised panel colour */
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
 }
-.layer:hover, .layer.open { background: rgba(91,155,213,0.08); border-color: var(--steel-dim); }
+/* Hovered or opened row: light steel-blue tint and steel border. */
+.layer:hover, .layer.open { background: rgba(91,155,213,0.08); border-color: var(--steel-dim); }  /* background colour: a semi-transparent colour; border colour: dim steel blue */
+/* Layer number (01 to 08). */
 .layer .lnum {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--text-faint);
-  width: 22px;
-  flex-shrink: 0;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 12px;  /* text size 12px */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  width: 22px;  /* width 22px */
+  flex-shrink: 0;  /* do not shrink when space is tight */
 }
-.layer .ltitle { font-family: var(--display); font-size: 15.5px; font-weight: 600; flex: 1; }
-.layer .lsub { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }
-.layer .lchevron { font-family: var(--mono); color: var(--text-faint); transition: transform 0.15s; }
-.layer.open .lchevron { transform: rotate(90deg); color: var(--copper); }
+/* Layer title; 'flex: 1' pushes the subtitle and arrow to the right. */
+.layer .ltitle { font-family: var(--display); font-size: 15.5px; font-weight: 600; flex: 1; }  /* heading font (Space Grotesk); text size 15.5px; font weight 600 (400 normal, 600 semi-bold, 700 bold); grow to fill the remaining space */
+/* Layer subtitle in small monospace. */
+.layer .lsub { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); }  /* monospace font (JetBrains Mono); text size 11.5px; text colour: faint text colour */
+/* The › arrow; it rotates when the row opens. */
+.layer .lchevron { font-family: var(--mono); color: var(--text-faint); transition: transform 0.15s; }  /* monospace font (JetBrains Mono); text colour: faint text colour; animate changes smoothly: transform 0.15s */
+/* Rotated copper arrow while the row is open. */
+.layer.open .lchevron { transform: rotate(90deg); color: var(--copper); }  /* rotate the element 90 degrees; text colour: copper */
+/* The explanation panel under a row. Collapsed by default (max-height 0, hidden overflow); it animates open. */
 .layer-detail {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease;
-  background: var(--bg);
-  border-left: 1px solid var(--border);
-  border-right: 1px solid var(--border);
+  max-height: 0;  /* collapsed: no height allowed */
+  overflow: hidden;  /* hide anything that spills outside the box */
+  transition: max-height 0.2s ease;  /* animate changes smoothly: max-height 0.2s ease */
+  background: var(--bg);  /* background colour: page background */
+  border-left: 1px solid var(--border);  /* 1px solid border on the left in border colour */
+  border-right: 1px solid var(--border);  /* 1px solid border on the right in border colour */
 }
-.layer-detail.open { max-height: 200px; border-bottom: 1px solid var(--border); }
+/* Open state: allows height up to 200px. */
+.layer-detail.open { max-height: 200px; border-bottom: 1px solid var(--border); }  /* never taller than 200px (0 = collapsed); 1px solid border along the bottom in border colour */
+/* Explanation text padding and colour. */
 .layer-detail p {
-  padding: 16px 20px 20px 62px;
-  font-size: 13.5px;
-  color: var(--text-dim);
+  padding: 16px 20px 20px 62px;  /* inner spacing: 16px top, 20px right, 20px bottom, 62px left */
+  font-size: 13.5px;  /* text size 13.5px */
+  color: var(--text-dim);  /* text colour: muted text colour */
 }
+/* Thin vertical connector line (a spare diagram piece). */
 .connector {
-  width: 1px;
-  height: 14px;
-  background: var(--border);
-  margin-left: 33px;
+  width: 1px;  /* width 1px */
+  height: 14px;  /* height 14px */
+  background: var(--border);  /* background colour: border colour */
+  margin-left: 33px;  /* space on the left: 33px */
 }
 
 /* ---------- PROJECT CARDS ---------- */
+/* One project card in 'What I'm Building'. */
 .project-card {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  padding: 28px;
-  margin-bottom: 1px;
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  padding: 28px;  /* inner spacing: 28px on all sides */
+  margin-bottom: 1px;  /* space below: 1px */
 }
+/* The monospace flow line at the top of a project card (for example REQUEST → ...). */
 .project-flow {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--steel);
-  margin-bottom: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11.5px;  /* text size 11.5px */
+  color: var(--steel);  /* text colour: steel blue */
+  margin-bottom: 12px;  /* space below: 12px */
+  display: flex;  /* lay children out in a flexible row */
+  flex-wrap: wrap;  /* allow items to wrap onto a new line */
+  gap: 6px;  /* space between items: 6px */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
 }
-.project-flow span.sep { color: var(--text-faint); }
-.project-card h4 { font-size: 18px; margin-bottom: 8px; }
-.project-card p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; }
-.project-stack { display: flex; flex-wrap: wrap; gap: 8px; }
+/* The arrows between flow steps, in a faint colour. */
+.project-flow span.sep { color: var(--text-faint); }  /* text colour: faint text colour */
+/* Project title. */
+.project-card h4 { font-size: 18px; margin-bottom: 8px; }  /* text size 18px; space below: 8px */
+/* Project description. */
+.project-card p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; }  /* text size 14px; text colour: muted text colour; space below: 12px */
+/* Row of technology tags. */
+.project-stack { display: flex; flex-wrap: wrap; gap: 8px; }  /* lay children out in a flexible row; allow items to wrap onto a new line; space between items: 8px */
+/* One technology tag: a small bordered pill. */
 .project-stack span {
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 3px 9px;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  border-radius: 3px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11px;  /* text size 11px */
+  padding: 3px 9px;  /* inner spacing: 3px top and bottom, 9px left and right */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  border-radius: 3px;  /* rounded corners: 3px */
 }
+/* Status badge (IN PROGRESS, BUILT, LIVE, ...), floated to the top-right of the card. */
 .project-status {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  padding: 3px 8px;
-  border-radius: 3px;
-  float: right;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 10.5px;  /* text size 10.5px */
+  padding: 3px 8px;  /* inner spacing: 3px top and bottom, 8px left and right */
+  border-radius: 3px;  /* rounded corners: 3px */
+  float: right;  /* float to the right */
 }
-.project-status.building { background: rgba(212,145,75,0.15); color: var(--copper); }
-.project-status.learning { background: rgba(91,155,213,0.15); color: var(--steel); }
-.project-status.live { background: rgba(111,191,139,0.15); color: var(--ok); }
-.project-status.built { background: rgba(140,160,179,0.15); color: var(--text-dim); }
-.project-link { margin-top: 14px; }
+/* IN PROGRESS: copper tint. */
+.project-status.building { background: rgba(212,145,75,0.15); color: var(--copper); }  /* background colour: a semi-transparent colour; text colour: copper */
+/* Blue tint (used for IN PROGRESS · PRE-LAUNCH). */
+.project-status.learning { background: rgba(91,155,213,0.15); color: var(--steel); }  /* background colour: a semi-transparent colour; text colour: steel blue */
+/* LIVE: green tint. */
+.project-status.live { background: rgba(111,191,139,0.15); color: var(--ok); }  /* background colour: a semi-transparent colour; text colour: green */
+/* BUILT: grey tint. */
+.project-status.built { background: rgba(140,160,179,0.15); color: var(--text-dim); }  /* background colour: a semi-transparent colour; text colour: muted text colour */
+/* Spacing above the link line. */
+.project-link { margin-top: 14px; }  /* space above: 14px */
+/* 'View Repo' link: small monospace steel-blue text. */
 .project-link a {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--steel);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.15s;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 12px;  /* text size 12px */
+  color: var(--steel);  /* text colour: steel blue */
+  border-bottom: 1px solid transparent;  /* 1px solid border along the bottom in transparent */
+  transition: border-color 0.15s;  /* animate changes smoothly: border-color 0.15s */
 }
-.project-link a:hover { border-color: var(--steel); }
+/* Underline appears on hover. */
+.project-link a:hover { border-color: var(--steel); }  /* border colour: steel blue */
 
 /* ---------- EXPERIENCE TIMELINE ---------- */
+/* One job card in Professional Experience. */
 .exp-item {
-  border: 1px solid var(--border);
-  background: var(--panel);
-  margin-bottom: 1px;
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  margin-bottom: 1px;  /* space below: 1px */
 }
+/* Clickable job header row: title and employer on the left, dates on the right. */
 .exp-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 22px 26px;
-  cursor: pointer;
-  gap: 16px;
-  flex-wrap: wrap;
+  display: flex;  /* lay children out in a flexible row */
+  justify-content: space-between;  /* spread items to the two ends with equal gaps */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  padding: 22px 26px;  /* inner spacing: 22px top and bottom, 26px left and right */
+  cursor: pointer;  /* show the pointing-hand cursor */
+  gap: 16px;  /* space between items: 16px */
+  flex-wrap: wrap;  /* allow items to wrap onto a new line */
 }
-.exp-header:hover { background: var(--panel-raised); }
-.exp-role h4 { font-size: 17px; margin-bottom: 4px; }
-.exp-role .org { font-size: 13.5px; color: var(--steel); }
+/* Slightly lighter background on hover. */
+.exp-header:hover { background: var(--panel-raised); }  /* background colour: raised panel colour */
+/* Job title. */
+.exp-role h4 { font-size: 17px; margin-bottom: 4px; }  /* text size 17px; space below: 4px */
+/* Employer name in steel blue. */
+.exp-role .org { font-size: 13.5px; color: var(--steel); }  /* text size 13.5px; text colour: steel blue */
+/* Small badge next to a job title (COMPLETED · INTERNSHIP). */
 .exp-badge {
-  font-family: var(--mono);
-  font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 3px;
-  background: rgba(212,145,75,0.15);
-  color: var(--copper);
-  vertical-align: middle;
-  letter-spacing: 0.04em;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 10px;  /* text size 10px */
+  padding: 3px 8px;  /* inner spacing: 3px top and bottom, 8px left and right */
+  border-radius: 3px;  /* rounded corners: 3px */
+  background: rgba(212,145,75,0.15);  /* background colour: a semi-transparent colour */
+  color: var(--copper);  /* text colour: copper */
+  vertical-align: middle;  /* vertical alignment: middle */
+  letter-spacing: 0.04em;  /* space between letters: 0.04em */
 }
-.exp-dates { font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); white-space: nowrap; }
+/* Dates on the right (monospace, no wrapping). */
+.exp-dates { font-family: var(--mono); font-size: 12.5px; color: var(--text-faint); white-space: nowrap; }  /* monospace font (JetBrains Mono); text size 12.5px; text colour: faint text colour; keep on one line (no wrapping) */
+/* The expandable list of achievements. Collapsed (max-height 0, hidden overflow) and animated open. */
 .exp-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.25s ease;
+  max-height: 0;  /* collapsed: no height allowed */
+  overflow: hidden;  /* hide anything that spills outside the box */
+  transition: max-height 0.25s ease;  /* animate changes smoothly: max-height 0.25s ease */
 }
-.exp-body.open { max-height: 600px; }
-.exp-body ul { padding: 0 26px 24px; }
+/* Expanded state. */
+.exp-body.open { max-height: 600px; }  /* never taller than 600px (0 = collapsed) */
+/* Padding around the bullet list. */
+.exp-body ul { padding: 0 26px 24px; }  /* inner spacing: 0 top, 26px left and right, 24px bottom */
+/* Each bullet: muted text with room on the left for the custom marker. */
 .exp-body li {
-  font-size: 14px;
-  color: var(--text-dim);
-  padding-left: 18px;
-  position: relative;
-  margin-bottom: 8px;
+  font-size: 14px;  /* text size 14px */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  padding-left: 18px;  /* inner spacing on the left: 18px */
+  position: relative;  /* positioned relative to its normal spot, so children can be placed inside it */
+  margin-bottom: 8px;  /* space below: 8px */
 }
+/* Draws the '›' bullet marker in copper (the character comes from the content property). */
 .exp-body li::before {
-  content: '›';
-  position: absolute;
-  left: 0;
-  color: var(--copper);
+  content: '›';  /* text drawn by CSS: '›' */
+  position: absolute;  /* placed precisely inside the nearest positioned parent */
+  left: 0;  /* 0 from the left edge */
+  color: var(--copper);  /* text colour: copper */
 }
 
 /* ---------- METRICS ---------- */
+/* Grid for the 'Documented Results' numbers (same thin-line grid technique as the cards). */
 .metric-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));  /* as many equal columns as fit (each at least the minimum in minmax): repeat(auto-fit, minmax(190px, 1fr)) */
+  gap: 1px;  /* space between items: 1px */
+  background: var(--border);  /* background colour: border colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
 }
-.metric-cell { background: var(--panel); padding: 26px; }
-.metric-cell .num { font-family: var(--mono); font-size: 30px; color: var(--copper); font-weight: 600; }
-.metric-cell .label { font-size: 12.5px; color: var(--text-dim); margin-top: 6px; }
+/* One metric box. */
+.metric-cell { background: var(--panel); padding: 26px; }  /* background colour: panel colour; inner spacing: 26px on all sides */
+/* The big number. */
+.metric-cell .num { font-family: var(--mono); font-size: 30px; color: var(--copper); font-weight: 600; }  /* monospace font (JetBrains Mono); text size 30px; text colour: copper; font weight 600 (400 normal, 600 semi-bold, 700 bold) */
+/* Caption under the number. */
+.metric-cell .label { font-size: 12.5px; color: var(--text-dim); margin-top: 6px; }  /* text size 12.5px; text colour: muted text colour; space above: 6px */
 
 /* ---------- SKILLS ---------- */
-.skill-group { margin-bottom: 28px; }
+/* One group of skills (spacing). */
+.skill-group { margin-bottom: 28px; }  /* space below: 28px */
+/* Group name in small uppercase monospace. */
 .skill-group h4 {
-  font-family: var(--mono);
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-  margin-bottom: 12px;
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 12px;  /* text size 12px */
+  text-transform: uppercase;  /* show text in capitals */
+  letter-spacing: 0.08em;  /* space between letters: 0.08em */
+  color: var(--text-faint);  /* text colour: faint text colour */
+  margin-bottom: 12px;  /* space below: 12px */
 }
-.skill-group.current-focus h4 { color: var(--copper); }
-.skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+/* The Backend AI group's title in copper. */
+.skill-group.current-focus h4 { color: var(--copper); }  /* text colour: copper */
+/* Row of skill pills that wraps onto new lines. */
+.skill-pills { display: flex; flex-wrap: wrap; gap: 8px; }  /* lay children out in a flexible row; allow items to wrap onto a new line; space between items: 8px */
+/* One skill pill: rounded border. */
 .skill-pills span {
-  font-size: 13px;
-  padding: 6px 12px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  color: var(--text-dim);
+  font-size: 13px;  /* text size 13px */
+  padding: 6px 12px;  /* inner spacing: 6px top and bottom, 12px left and right */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  border-radius: 20px;  /* rounded corners: 20px */
+  color: var(--text-dim);  /* text colour: muted text colour */
 }
-.skill-group.current-focus .skill-pills span { border-color: var(--copper-dim); color: var(--copper); }
+/* Pills in the Backend AI group are copper. */
+.skill-group.current-focus .skill-pills span { border-color: var(--copper-dim); color: var(--copper); }  /* border colour: dim copper; text colour: copper */
 
 /* ---------- GITHUB ---------- */
+/* Grid that holds the GitHub repo cards. */
 .gh-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  min-height: 100px;
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));  /* as many equal columns as fit (each at least the minimum in minmax): repeat(auto-fit, minmax(260px, 1fr)) */
+  gap: 1px;  /* space between items: 1px */
+  background: var(--border);  /* background colour: border colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  min-height: 100px;  /* never shorter than 100px */
 }
-.gh-card { background: var(--panel); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
-.gh-card .gh-name { font-family: var(--mono); font-size: 14.5px; color: var(--steel); }
-.gh-card .gh-desc { font-size: 13px; color: var(--text-dim); flex: 1; }
-.gh-card .gh-meta { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); display: flex; gap: 14px; }
-.gh-state { grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-faint); font-family: var(--mono); font-size: 13px; }
+/* One repo card: a column with consistent spacing. */
+.gh-card { background: var(--panel); padding: 22px; display: flex; flex-direction: column; gap: 8px; }  /* background colour: panel colour; inner spacing: 22px on all sides; lay children out in a flexible row; stack children in a column; space between items: 8px */
+/* Repo name in monospace steel blue. */
+.gh-card .gh-name { font-family: var(--mono); font-size: 14.5px; color: var(--steel); }  /* monospace font (JetBrains Mono); text size 14.5px; text colour: steel blue */
+/* Description; 'flex: 1' pushes the metadata to the bottom of the card. */
+.gh-card .gh-desc { font-size: 13px; color: var(--text-dim); flex: 1; }  /* text size 13px; text colour: muted text colour; grow to fill the remaining space */
+/* Language, stars, forks, updated: a small monospace row. */
+.gh-card .gh-meta { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); display: flex; gap: 14px; }  /* monospace font (JetBrains Mono); text size 11.5px; text colour: faint text colour; lay children out in a flexible row; space between items: 14px */
+/* Message shown while loading, when empty, or on error; it spans all grid columns. */
+.gh-state { grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--text-faint); font-family: var(--mono); font-size: 13px; }  /* span every column of the grid; inner spacing: 40px on all sides; center-align text; text colour: faint text colour; monospace font (JetBrains Mono); text size 13px */
 
 /* ---------- ABOUT ---------- */
-.about-text { max-width: 680px; font-size: 17px; color: var(--text-dim); }
-.about-text p { margin-bottom: 18px; }
-.about-text strong { color: var(--text); font-weight: 600; }
+/* About text: limited width, larger muted text. */
+.about-text { max-width: 680px; font-size: 17px; color: var(--text-dim); }  /* never wider than 680px; text size 17px; text colour: muted text colour */
+/* Paragraph spacing. */
+.about-text p { margin-bottom: 18px; }  /* space below: 18px */
+/* Bold words in the About text are full white. */
+.about-text strong { color: var(--text); font-weight: 600; }  /* text colour: main text colour; font weight 600 (400 normal, 600 semi-bold, 700 bold) */
 
 /* ---------- CONTACT ---------- */
+/* Two-column layout: links on the left, form on the right. */
 .contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: 1fr 1fr;  /* 2 equal columns */
+  gap: 48px;  /* space between items: 48px */
 }
-.contact-links { display: flex; flex-direction: column; gap: 14px; }
+/* Column of contact link rows. */
+.contact-links { display: flex; flex-direction: column; gap: 14px; }  /* lay children out in a flexible row; stack children in a column; space between items: 14px */
+/* One contact row (email, GitHub, LinkedIn, CV). */
 .contact-link-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border: 1px solid var(--border);
-  background: var(--panel);
-  transition: border-color 0.15s;
+  display: flex;  /* lay children out in a flexible row */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  justify-content: space-between;  /* spread items to the two ends with equal gaps */
+  padding: 16px 20px;  /* inner spacing: 16px top and bottom, 20px left and right */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  background: var(--panel);  /* background colour: panel colour */
+  transition: border-color 0.15s;  /* animate changes smoothly: border-color 0.15s */
 }
-.contact-link-row:hover { border-color: var(--steel-dim); }
-.contact-link-row .l { font-family: var(--mono); font-size: 13px; color: var(--text-dim); }
-.contact-link-row .v { font-size: 14.5px; }
-.copy-btn { font-family: var(--mono); font-size: 11px; color: var(--text-faint); background: none; border: none; }
-.copy-btn:hover { color: var(--copper); }
+/* Border turns steel blue on hover. */
+.contact-link-row:hover { border-color: var(--steel-dim); }  /* border colour: dim steel blue */
+/* Small label (EMAIL, GITHUB, ...). */
+.contact-link-row .l { font-family: var(--mono); font-size: 13px; color: var(--text-dim); }  /* monospace font (JetBrains Mono); text size 13px; text colour: muted text colour */
+/* The link text. */
+.contact-link-row .v { font-size: 14.5px; }  /* text size 14.5px */
+/* The COPY button: plain text, no border. */
+.copy-btn { font-family: var(--mono); font-size: 11px; color: var(--text-faint); background: none; border: none; }  /* monospace font (JetBrains Mono); text size 11px; text colour: faint text colour; background colour: none; no border on all sides */
+/* Turns copper on hover. */
+.copy-btn:hover { color: var(--copper); }  /* text colour: copper */
 
-.contact-form { display: flex; flex-direction: column; gap: 14px; }
-.contact-form label { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); margin-bottom: -6px; }
+/* Form fields stacked in a column. */
+.contact-form { display: flex; flex-direction: column; gap: 14px; }  /* lay children out in a flexible row; stack children in a column; space between items: 14px */
+/* Field labels (small monospace). */
+.contact-form label { font-family: var(--mono); font-size: 11.5px; color: var(--text-faint); margin-bottom: -6px; }  /* monospace font (JetBrains Mono); text size 11.5px; text colour: faint text colour; space below: -6px */
+/* Text fields: dark panel background, light text, thin border. */
 .contact-form input, .contact-form textarea {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  color: var(--text);
-  padding: 12px 14px;
-  border-radius: var(--radius);
-  font-family: var(--body);
-  font-size: 14px;
+  background: var(--panel);  /* background colour: panel colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  color: var(--text);  /* text colour: main text colour */
+  padding: 12px 14px;  /* inner spacing: 12px top and bottom, 14px left and right */
+  border-radius: var(--radius);  /* rounded corners: var(--radius) */
+  font-family: var(--body);  /* body font (Inter) */
+  font-size: 14px;  /* text size 14px */
 }
+/* Visible blue outline when a field is focused (important for keyboard users). */
 .contact-form input:focus, .contact-form textarea:focus {
-  outline: 2px solid var(--steel);
-  outline-offset: 1px;
-  border-color: var(--steel);
+  outline: 2px solid var(--steel);  /* focus outline: 2px solid var(--steel) */
+  outline-offset: 1px;  /* gap between the element and its outline: 1px */
+  border-color: var(--steel);  /* border colour: steel blue */
 }
-.form-status { font-family: var(--mono); font-size: 12.5px; color: var(--ok); min-height: 16px; }
+/* Success or error message line under the form (it reserves height so the layout does not jump). */
+.form-status { font-family: var(--mono); font-size: 12.5px; color: var(--ok); min-height: 16px; }  /* monospace font (JetBrains Mono); text size 12.5px; text colour: green; never shorter than 16px */
 
+/* On narrow screens stack the contact area into one column. */
 @media (max-width: 800px) {
-  .contact-grid { grid-template-columns: 1fr; }
+  /* One column. */
+  .contact-grid { grid-template-columns: 1fr; }  /* a single column */
 }
 
 /* ---------- FOOTER ---------- */
+/* Footer layout: items spread across the row, wrapping on small screens. */
 footer {
-  padding: 32px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
+  padding: 32px 0;  /* inner spacing: 32px top and bottom, 0 left and right */
+  display: flex;  /* lay children out in a flexible row */
+  justify-content: space-between;  /* spread items to the two ends with equal gaps */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  flex-wrap: wrap;  /* allow items to wrap onto a new line */
+  gap: 12px;  /* space between items: 12px */
 }
-footer .f-left { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }
-footer .f-links { display: flex; gap: 20px; }
-footer .f-links a { font-size: 13px; color: var(--text-dim); }
-footer .f-links a:hover { color: var(--steel); }
+/* Copyright text. */
+footer .f-left { font-family: var(--mono); font-size: 12px; color: var(--text-faint); }  /* monospace font (JetBrains Mono); text size 12px; text colour: faint text colour */
+/* Footer link row. */
+footer .f-links { display: flex; gap: 20px; }  /* lay children out in a flexible row; space between items: 20px */
+/* Footer links. */
+footer .f-links a { font-size: 13px; color: var(--text-dim); }  /* text size 13px; text colour: muted text colour */
+/* Turn steel blue on hover. */
+footer .f-links a:hover { color: var(--steel); }  /* text colour: steel blue */
 
 /* ---------- BACK TO TOP ---------- */
+/* The round ↑ button fixed to the bottom-right corner. Invisible until you scroll (opacity 0 and no pointer events). */
 .back-top {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  background: var(--panel-raised);
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s, border-color 0.2s;
-  z-index: 40;
-  font-size: 16px;
+  position: fixed;  /* fixed in place on the screen */
+  bottom: 24px;  /* 24px from the bottom edge */
+  right: 24px;  /* 24px from the right edge */
+  width: 44px; height: 44px;  /* width 44px; height 44px */
+  border-radius: 50%;  /* fully round (a circle) */
+  background: var(--panel-raised);  /* background colour: raised panel colour */
+  border: 1px solid var(--border);  /* 1px solid border on all sides in border colour */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  display: flex; align-items: center; justify-content: center;  /* lay children out in a flexible row; centre items on the cross axis (vertically in a row); centre items along the main axis */
+  opacity: 0;  /* transparency: 0 (0 invisible, 1 fully visible) */
+  pointer-events: none;  /* ignore mouse clicks (they pass through) */
+  transition: opacity 0.2s, border-color 0.2s;  /* animate changes smoothly: opacity 0.2s, border-color 0.2s */
+  z-index: 40;  /* stacking order 40: higher numbers sit in front */
+  font-size: 16px;  /* text size 16px */
 }
-.back-top.visible { opacity: 1; pointer-events: auto; }
-.back-top:hover { border-color: var(--steel); color: var(--steel); }
+/* Shown after scrolling (the JavaScript adds this class). */
+.back-top.visible { opacity: 1; pointer-events: auto; }  /* transparency: 1 (0 invisible, 1 fully visible); respond to clicks normally */
+/* Steel-blue border and arrow on hover. */
+.back-top:hover { border-color: var(--steel); color: var(--steel); }  /* border colour: steel blue; text colour: steel blue */
 
 /* ---------- MOBILE MENU ---------- */
+/* Dropdown menu for phones: hidden by default. */
 .mobile-menu {
-  display: none;
-  flex-direction: column;
-  background: var(--panel);
-  border-bottom: 1px solid var(--border);
-  padding: 8px 24px 20px;
+  display: none;  /* hide the element */
+  flex-direction: column;  /* stack children in a column */
+  background: var(--panel);  /* background colour: panel colour */
+  border-bottom: 1px solid var(--border);  /* 1px solid border along the bottom in border colour */
+  padding: 8px 24px 20px;  /* inner spacing: 8px top, 24px left and right, 20px bottom */
 }
-.mobile-menu.open { display: flex; }
-.mobile-menu a { padding: 12px 0; font-size: 15px; color: var(--text-dim); border-bottom: 1px solid var(--grid-line-soft); }
+/* Shown when the JavaScript adds the class 'open'. */
+.mobile-menu.open { display: flex; }  /* lay children out in a flexible row */
+/* Each mobile link: a large tap target with a divider. */
+.mobile-menu a { padding: 12px 0; font-size: 15px; color: var(--text-dim); border-bottom: 1px solid var(--grid-line-soft); }  /* inner spacing: 12px top and bottom, 0 left and right; text size 15px; text colour: muted text colour; 1px solid border along the bottom in faint grid line colour */
 
 /* ---------- FOCUS VISIBLE ---------- */
+/* Keyboard focus ring: a clear steel-blue outline appears only when navigating with the keyboard. */
 a:focus-visible, button:focus-visible, .layer:focus-visible, .exp-header:focus-visible {
-  outline: 2px solid var(--steel);
-  outline-offset: 2px;
+  outline: 2px solid var(--steel);  /* focus outline: 2px solid var(--steel) */
+  outline-offset: 2px;  /* gap between the element and its outline: 2px */
 }
 
 /* ---------- REVEAL ---------- */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+/* Starting state of fade-in blocks: invisible and 16px lower than their final position. */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }  /* transparency: 0 (0 invisible, 1 fully visible); shift down 16px; animate changes smoothly: opacity 0.5s ease, transform 0.5s ease */
+/* Final state (the JavaScript adds 'visible'): fully visible and in place. The transition animates between the two states. */
+.reveal.visible { opacity: 1; transform: translateY(0); }  /* transparency: 1 (0 invisible, 1 fully visible); no shift (original position) */
 
+/* Small phones: tighter spacing. */
 @media (max-width: 600px) {
-  .section { padding: 64px 0; }
-  .title-block-top { padding: 28px 24px 24px; flex-direction: column; }
-  .hero-plate { width: 100%; }
+  /* Smaller vertical padding on small phones. */
+  .section { padding: 64px 0; }  /* inner spacing: 64px top and bottom, 0 left and right */
+  /* Tighter padding, and stack the text above the portrait plate. */
+  .title-block-top { padding: 28px 24px 24px; flex-direction: column; }  /* inner spacing: 28px top, 24px left and right, 24px bottom; stack children in a column */
+  /* On phones the portrait box takes the full width. */
+  .hero-plate { width: 100%; }  /* width 100% */
 }
 
 /* ---------- NEXT CASE (Sheet 04.1) ---------- */
-.project-status.queued { background: transparent; border: 1px solid var(--steel-dim); color: var(--steel); }
+/* UP NEXT: outlined badge with no fill. */
+.project-status.queued { background: transparent; border: 1px solid var(--steel-dim); color: var(--steel); }  /* background colour: transparent; 1px solid border on all sides in dim steel blue; text colour: steel blue */
+/* Two-column layout for the next-case card and the 'how a case gets added' card. */
 .case-layout {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 1px;
-  align-items: start;
+  display: grid;  /* lay children out in a grid */
+  grid-template-columns: 1.4fr 1fr;  /* 2 columns, the first 1.4 times wider */
+  gap: 1px;  /* space between items: 1px */
+  align-items: start;  /* align items: start */
 }
-.case-layout .project-card { margin-bottom: 0; height: 100%; }
-.case-beats, .how-steps { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 16px 0 4px; }
-.case-beats li, .how-steps li { display: flex; gap: 14px; font-size: 14px; color: var(--text-dim); }
-.case-beats strong { color: var(--text); font-weight: 600; }
-.beat-n { font-family: var(--mono); font-size: 12px; color: var(--copper); flex-shrink: 0; width: 22px; padding-top: 2px; }
-.how-card { border: 1px solid var(--border); background: var(--panel-raised); padding: 28px; height: 100%; }
-.how-card .icon-label { font-family: var(--mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; margin-bottom: 4px; }
-.how-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-faint); }
-.case-layout code, .how-note code { font-family: var(--mono); font-size: 12px; color: var(--steel); }
+/* Make the project card fill the full column height, with no extra bottom margin. */
+.case-layout .project-card { margin-bottom: 0; height: 100%; }  /* space below: 0; height 100% */
+/* Lists without default numbers, spaced in a column. */
+.case-beats, .how-steps { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 16px 0 4px; }  /* remove the bullet markers; lay children out in a flexible row; stack children in a column; space between items: 14px; outer spacing: 16px top, 0 left and right, 4px bottom */
+/* Each step: number on the left, text on the right. */
+.case-beats li, .how-steps li { display: flex; gap: 14px; font-size: 14px; color: var(--text-dim); }  /* lay children out in a flexible row; space between items: 14px; text size 14px; text colour: muted text colour */
+/* Beat titles in white. */
+.case-beats strong { color: var(--text); font-weight: 600; }  /* text colour: main text colour; font weight 600 (400 normal, 600 semi-bold, 700 bold) */
+/* The copper step number. */
+.beat-n { font-family: var(--mono); font-size: 12px; color: var(--copper); flex-shrink: 0; width: 22px; padding-top: 2px; }  /* monospace font (JetBrains Mono); text size 12px; text colour: copper; do not shrink when space is tight; width 22px; inner spacing at the top: 2px */
+/* The 'How a case gets added' panel. */
+.how-card { border: 1px solid var(--border); background: var(--panel-raised); padding: 28px; height: 100%; }  /* 1px solid border on all sides in border colour; background colour: raised panel colour; inner spacing: 28px on all sides; height 100% */
+/* Panel label. */
+.how-card .icon-label { font-family: var(--mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.08em; margin-bottom: 4px; }  /* monospace font (JetBrains Mono); text size 11px; text colour: faint text colour; space between letters: 0.08em; space below: 4px */
+/* Footnote in the panel with a divider above. */
+.how-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-faint); }  /* space above: 18px; inner spacing at the top: 16px; 1px solid border on the top in border colour; text size 13px; text colour: faint text colour */
+/* Inline code snippets in the monospace font and steel blue. */
+.case-layout code, .how-note code { font-family: var(--mono); font-size: 12px; color: var(--steel); }  /* monospace font (JetBrains Mono); text size 12px; text colour: steel blue */
+/* On narrow screens the two case cards stack in one column. */
 @media (max-width: 860px) { .case-layout { grid-template-columns: 1fr; } }
 
 /* ---------- FLYRANK FOOTER BADGE ---------- */
+/* The FlyRank verify badge pill in the footer. */
 .fr-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  color: var(--text-dim);
-  border: 1px solid var(--steel-dim);
-  border-radius: 20px;
-  padding: 6px 14px;
-  transition: color 0.15s, border-color 0.15s;
+  display: inline-flex;  /* inline flexible box */
+  align-items: center;  /* centre items on the cross axis (vertically in a row) */
+  gap: 8px;  /* space between items: 8px */
+  font-family: var(--mono);  /* monospace font (JetBrains Mono) */
+  font-size: 11.5px;  /* text size 11.5px */
+  color: var(--text-dim);  /* text colour: muted text colour */
+  border: 1px solid var(--steel-dim);  /* 1px solid border on all sides in dim steel blue */
+  border-radius: 20px;  /* rounded corners: 20px */
+  padding: 6px 14px;  /* inner spacing: 6px top and bottom, 14px left and right */
+  transition: color 0.15s, border-color 0.15s;  /* animate changes smoothly: color 0.15s, border-color 0.15s */
 }
-.fr-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }
-.fr-badge:hover { color: var(--steel); border-color: var(--steel); }
+/* Green dot in the badge. */
+.fr-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok); }  /* width 6px; height 6px; fully round (a circle); background colour: green */
+/* Blue text and border on hover. */
+.fr-badge:hover { color: var(--steel); border-color: var(--steel); }  /* text colour: steel blue; border colour: steel blue */
 
-.cred-docs { margin-top: 10px; font-size: 12.5px; line-height: 1.9; }
-.cred-docs a { color: var(--steel); }
+/* Document links list inside the FlyRank credentials card. */
+.cred-docs { margin-top: 10px; font-size: 12.5px; line-height: 1.9; }  /* space above: 10px; text size 12.5px; line spacing 1.9 times the text size */
+/* Steel-blue links. */
+.cred-docs a { color: var(--steel); }  /* text colour: steel blue */
 
-.project-accepted { font-family: var(--mono); font-size: 12px; color: var(--ok); margin: -2px 0 12px; }
-.project-accepted a { color: var(--steel); border-bottom: 1px solid transparent; }
-.project-accepted a:hover { border-color: var(--steel); }
+/* The green '✓ Accepted as my FlyRank Backend capstone' line. */
+.project-accepted { font-family: var(--mono); font-size: 12px; color: var(--ok); margin: -2px 0 12px; }  /* monospace font (JetBrains Mono); text size 12px; text colour: green; outer spacing: -2px top, 0 left and right, 12px bottom */
+/* Verify link. */
+.project-accepted a { color: var(--steel); border-bottom: 1px solid transparent; }  /* text colour: steel blue; 1px solid border along the bottom in transparent */
+/* Underline on hover. */
+.project-accepted a:hover { border-color: var(--steel); }  /* border colour: steel blue */
