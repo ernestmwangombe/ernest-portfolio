@@ -34,7 +34,7 @@ The "What I'm Building" section links out to these repos rather than embedding t
 - Expandable professional experience timeline, sourced from my CV — including the completed FlyRank Backend AI Engineering internship (Jul–Oct 2026), explicitly labeled as an internship
 - "What I'm Building" section linking out to real, named repositories (task-management-api, Auth-Login-protect, ethical-web-scraper-pipeline, flyrank-capstone-widget-platform, applyfolio) plus one freelance client project
 - Live GitHub repository feed (up to 8 repos) with loading / empty / error states — pulls automatically from the GitHub REST API, so new public repos appear without editing the site
-- Curated certifications section — only certificates that back up skills or sections already shown elsewhere on the site, including Anthropic Education's AI Fluency, Claude Platform 101, Claude Code 101, and Claude Code in Action
+- Curated certifications section — only certificates that back up skills or sections already shown elsewhere on the site, including Anthropic Education's AI Fluency, Claude Platform 101, Claude Code 101, Claude Code in Action, and Model Context Protocol: Advanced Topics
 - "Next case" section (Sheet 04.1) naming the upcoming case study, with the three-beat shape and the steps for adding one (full note in `ADDING_A_CASE.md`)
 - FlyRank credentials (certificate, recommendation letter, evaluation report) with local PDF copies, FlyRank verification links, and a verify badge in the footer
 - Open Graph / Twitter share-preview metadata with a custom 1200x630 image
